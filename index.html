@@ -87,7 +87,7 @@
     .hero-subtitle {
       font-size: 17px;
       color: var(--muted);
-      max-width: 620px;
+      max-width: 800px;
       margin-bottom: 36px;
       line-height: 1.7;
     }
@@ -135,7 +135,7 @@
     .abstract-text strong { font-style: normal; font-weight: 600; }
 
     /* ========= AUTHORS ========= */
-    #authors { background: var(--bg); }
+    #authors { background: var(--white); }
     .authors-grid {
       display: flex; flex-wrap: wrap; gap: 24px;
       margin-top: 36px;
@@ -286,14 +286,22 @@
       overflow: hidden;
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
-      margin-bottom: 32px;
+      margin: 0 auto 28px;
       background: var(--white);
+      max-width: 960px;
+    }
+    .theme-figure img {
+      display: block;
+      width: 100%;
+      padding: 16px 16px 0;
+      box-sizing: border-box;
     }
     .theme-figure-caption {
-      padding: 12px 16px;
+      padding: 10px 16px 12px;
       background: var(--white);
       font-size: 13px; color: var(--muted); line-height: 1.5;
       border-top: 1px solid var(--border);
+      margin-top: 12px;
     }
 
     .r2-context-box {
@@ -330,30 +338,29 @@
     }
     .theme-item:hover { box-shadow: var(--shadow); }
     .theme-header {
-      display: flex; align-items: center; gap: 12px;
+      display: flex; flex-direction: column;
       padding: 14px 18px; cursor: pointer;
       user-select: none;
     }
     .theme-name {
       flex: 1; font-size: 14px; font-weight: 500; color: var(--text);
     }
-    .theme-r2-wrap {
-      display: flex; align-items: center; gap: 10px;
-      flex-shrink: 0;
+    .theme-name-row {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 10px;
     }
-    .theme-r2-bar-bg {
-      width: 80px; height: 6px; border-radius: 3px; background: #E5E7EB;
-      overflow: hidden;
+    .demo-bar {
+      display: flex; height: 10px; border-radius: 5px; overflow: hidden;
+      width: 100%;
     }
-    .theme-r2-bar-fill {
-      height: 100%; border-radius: 3px;
-      transition: width 0.4s ease;
+    .demo-bar-seg { height: 100%; }
+    .demo-legend {
+      display: flex; flex-wrap: wrap; gap: 4px 14px;
+      margin-top: 8px; font-size: 11px; color: var(--muted);
     }
-    .theme-r2-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px; font-weight: 600;
-      min-width: 52px; text-align: right;
-      color: var(--muted);
+    .demo-legend-item { display: flex; align-items: center; gap: 4px; }
+    .demo-legend-dot {
+      width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0;
     }
     .theme-chevron {
       width: 16px; height: 16px; color: var(--muted);
@@ -385,6 +392,21 @@
     .example-quote.gender { border-left-color: var(--gender); }
     .example-quote.so     { border-left-color: var(--so); }
 
+
+    /* ========= SORT CONTROLS ========= */
+    .sort-bar {
+      display: flex; align-items: center; gap: 8px;
+      margin: 16px 0 12px;
+      font-size: 13px; color: var(--muted);
+    }
+    .sort-btn {
+      padding: 4px 12px; border-radius: 6px;
+      border: 1.5px solid var(--border); background: var(--white);
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .sort-btn.active { border-color: var(--navy); background: var(--navy); color: #fff; }
+    .sort-btn:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
 
     /* ========= DATA ACCESS ========= */
     #data { background: var(--bg); }
@@ -418,7 +440,7 @@
     }
 
     /* ========= CITATION ========= */
-    #citation { background: var(--white); }
+    #citation { background: var(--bg); }
     .citation-box {
       background: #2C3550;
       border-radius: var(--radius);
@@ -463,27 +485,13 @@
 </head>
 <body>
 
-<!-- ============ NAV ============ -->
-<nav>
-  <div class="nav-inner">
-    <span class="nav-logo"> </span>
-    <div class="nav-links">
-      <a href="#abstract">Abstract</a>
-      <a href="#pipeline">Pipeline</a>
-      <a href="#themes">Themes</a>
-      <a href="#citation">Cite</a>
-    </div>
-  </div>
-</nav>
-
 <!-- ============ HERO ============ -->
 <div class="hero">
   <div class="container">
     <!-- <div class="hero-tag">NLP &middot; Computational Social Science</div> -->
     <h1>In Your Own Words</h1>
     <p class="hero-subtitle">
-      A computational framework for identifying interpretable, data-driven themes from free-text
-      descriptions of race, gender, and sexual orientation — going beyond closed survey categories.
+      We provide a <strong style="color:var(--text);">public dataset</strong> and computational framework for automatically discovering interpretable themes from free-text survey data. Applied to 1,004 U.S. participants' descriptions of race, gender, and sexual orientation, our method surfaces themes — like identity fluidity, belonging, and cultural pride — that standard survey categories miss. These themes reveal heterogeneity within demographic groups and illuminate how self-identified identities diverge from perceived ones.
     </p>
     <div class="hero-links">
       <a href="#" class="btn btn-primary">
@@ -506,63 +514,11 @@
 </div>
 
 
-<!-- ============ ABSTRACT ============ -->
-<section id="abstract">
-  <div class="container">
-    <div class="section-label">Abstract</div>
-    <p class="abstract-text">
-      Free-text survey responses can provide nuance often missed by structured questions, but remain difficult to statistically analyze. To address this, we introduce <strong>In Your Own Words</strong>, a computational framework for exploratory analyses of free-text survey data that identifies structured, interpretable themes in free-text responses more precisely than previous computational approaches, facilitating systematic analysis. To illustrate the benefits of this approach, we apply it to free-text descriptions of race, gender, and sexual orientation from 1,004 U.S. participants. The themes our approach learns have three practical applications in survey research. First, the themes can <strong>suggest structured questions</strong> to add to future surveys by surfacing salient constructs---such as belonging and identity fluidity---that existing surveys do not capture. Second, the themes <strong>reveal heterogeneity within standardized categories</strong>, explaining additional variation in health, well-being, and identity importance. Third, the themes <strong>illuminate systematic discordance between self-identified and perceived identities</strong>, highlighting mechanisms of misrecognition that existing measures do not reflect. More broadly, our framework can be deployed in a wide range of survey settings to identify interpretable themes from free text, complementing existing qualitative methods.
-    </p>
-  </div>
-</section>
-
-<!-- ============ AUTHORS ============ -->
-<section id="authors" style="padding-top:20px; padding-bottom:56px;">
-  <div class="container">
-    <div class="section-label">Authors</div>
-    <div class="authors-grid">
-      <!-- Author 1: update href (website link) and src (photo path) -->
-      <div class="author-card">
-        <div class="author-avatar">
-          <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=eRLE0YIAAAAJ&citpid=3" alt="Author photo"
-               onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#6B9FD4,#4A6FA5)'; this.parentElement.innerHTML='JW';" />
-        </div>
-        <div>
-          <div class="author-name"><a href="https://www.jennywang.me" target="_blank">Jenny S. Wang</a></div>
-          <div class="author-affil">Harvard Business School</div>
-        </div>
-      </div>
-      <!-- Author 2: update href and src -->
-      <div class="author-card">
-        <div class="author-avatar">
-          <img src="https://sociology.stanford.edu/sites/sociology/files/styles/hs_medium_square_720x720/public/media/people/aliya_saperstein_170420_0.jpg.webp?h=da6fae6e&itok=05SLKusF" alt="Author photo"
-               onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#9F87CC,#7C6AAF)'; this.parentElement.innerHTML='??';" />
-        </div>
-        <div>
-          <div class="author-name"><a href="https://sociology.stanford.edu/people/aliya-saperstein" target="_blank">Aliya Saperstein</a></div>
-          <div class="author-affil">Stanford University</div>
-        </div>
-      </div>
-      <!-- Author 3: update href and src -->
-      <div class="author-card">
-        <div class="author-avatar">
-          <img src="https://migrate.tech.cornell.edu/authors/profile_emma.jpg" alt="Author photo"
-               onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#D97A9B,#C45A80)'; this.parentElement.innerHTML='??';" />
-        </div>
-        <div>
-          <div class="author-name"><a href="https://people.eecs.berkeley.edu/~emmapierson/" target="_blank">Emma Pierson</a></div>
-          <div class="author-affil">University of California, Berkeley</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ============ PIPELINE ============ -->
 <section id="pipeline">
   <div class="container">
     <div class="section-label">Methodology</div>
-    <div class="section-title">How It Works: The Analysis Pipeline</div>
+    <div class="section-title">The Analysis Pipeline</div>
     <p class="section-desc">
       We combine large-scale text embeddings with a Sparse Autoencoder (SAE) and LLM interpretation
       to automatically discover interpretable identity themes from free-text survey responses.
@@ -571,59 +527,23 @@
     <!-- Step buttons -->
     <div class="pipeline-steps">
       <button class="pipeline-step-btn active" onclick="showStep(0)">
-        <span class="step-num">1</span> Collect
+        <span class="step-num">1</span> Embed
       </button>
       <button class="pipeline-step-btn" onclick="showStep(1)">
-        <span class="step-num">2</span> Embed
+        <span class="step-num">2</span> SAE Extraction
       </button>
       <button class="pipeline-step-btn" onclick="showStep(2)">
-        <span class="step-num">3</span> SAE Extraction
+        <span class="step-num">3</span> LLM Interpret
       </button>
       <button class="pipeline-step-btn" onclick="showStep(3)">
-        <span class="step-num">4</span> LLM Interpret
-      </button>
-      <button class="pipeline-step-btn" onclick="showStep(4)">
-        <span class="step-num">5</span> Annotate All
+        <span class="step-num">4</span> Annotate All
       </button>
     </div>
 
     <!-- Step panels -->
 
-    <!-- Step 1: Collect -->
+    <!-- Step 1: Embed -->
     <div class="pipeline-panel active">
-      <div class="pipeline-visual">
-        <div class="pipeline-icon" style="background:linear-gradient(135deg,#DBEAFE,#93C5FD);">📝</div>
-        <div class="pipeline-visual-label">
-          "Describe your [race/gender/sexual orientation] in your own words."
-        </div>
-      </div>
-      <div class="pipeline-content">
-        <div class="pipeline-step-title">Collect Free-Text Responses</div>
-        <p class="pipeline-step-desc">
-          We recruit 1,004 U.S. participants via Prolific with quotas to ensure representation
-          across racial, gender, and sexual orientation groups. Each participant answers open-ended
-          questions asking them to describe their race/ethnicity, gender, and sexual orientation
-          in their own words, alongside standard closed-category demographic questions.
-        </p>
-        <div class="pipeline-detail">
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">👥</div>
-            <span>1,004 participants recruited with demographic quotas via Prolific</span>
-          </div>
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">🗺️</div>
-            <span>3 identity dimensions: race/ethnicity, gender, and sexual orientation</span>
-          </div>
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">📊</div>
-            <span>Paired with closed-category responses for comparison and validation</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Step 2: Embed -->
-    <div class="pipeline-panel">
       <div class="pipeline-visual">
         <div class="pipeline-icon" style="background:linear-gradient(135deg,#EDE9FE,#A78BFA);">🔢</div>
         <div class="pipeline-visual-label">
@@ -638,20 +558,6 @@
           producing a 3,072-dimensional representation that captures the
           semantic content of the response.
         </p>
-        <div class="pipeline-detail">
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">🤖</div>
-            <span>Model: <strong>text-embedding-3-large</strong> (OpenAI)</span>
-          </div>
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">📐</div>
-            <span>Output dimensionality: <strong>3,072 dimensions</strong></span>
-          </div>
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">🔗</div>
-            <span>Embeddings capture semantic similarity across diverse free-text responses</span>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -671,20 +577,6 @@
           K=4 features are active for any given response. This sparsity constraint encourages
           each feature to capture a distinct, interpretable aspect of identity description.
         </p>
-        <div class="pipeline-detail">
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">🧩</div>
-            <span>Architecture: <strong>M=32 dictionary features</strong>, top-K sparse coding with <strong>K=4</strong></span>
-          </div>
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">🔬</div>
-            <span>Built on <strong>HypotheSAEs</strong> framework for interpretable feature extraction</span>
-          </div>
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">✅</div>
-            <span>Trained independently for each identity dimension (race, gender, sexual orientation)</span>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -704,20 +596,6 @@
           description of what the feature represents. Features with poor fidelity
           (annotation F1 &lt; 0.50) are excluded.
         </p>
-        <div class="pipeline-detail">
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">🤖</div>
-            <span>Interpreter: <strong>GPT-4o</strong> with top-10 activating examples per feature</span>
-          </div>
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">📏</div>
-            <span>Fidelity filtering: themes with F1 &lt; 0.50 excluded (median F1 = <strong>0.78</strong>)</span>
-          </div>
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">📋</div>
-            <span>Output: natural-language theme label (e.g., "mentions fluidity in gender identity")</span>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -737,20 +615,6 @@
           This produces a full binary annotation matrix for downstream analysis,
           validated against human raters (κ = 0.65).
         </p>
-        <div class="pipeline-detail">
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">🤖</div>
-            <span>Annotator: <strong>GPT-4.1-mini</strong> with identity-specific prompts</span>
-          </div>
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">📊</div>
-            <span>Output: binary matrix (N responses × M themes) per identity</span>
-          </div>
-          <div class="pipeline-detail-item">
-            <div class="pipeline-detail-icon">🤝</div>
-            <span>Validated against human raters: <strong>κ = 0.65</strong> agreement</span>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -759,7 +623,7 @@
       <button class="pipeline-nav-btn" id="prev-btn" onclick="prevStep()" disabled>
         ← Previous
       </button>
-      <span id="step-indicator">Step 1 of 5</span>
+      <span id="step-indicator">Step 1 of 4</span>
       <button class="pipeline-nav-btn" id="next-btn" onclick="nextStep()">
         Next →
       </button>
@@ -769,15 +633,14 @@
 
 <!-- ============ THEME EXPLORER ============ -->
 <section id="themes">
-  <div class="container--wide">
-    <div class="container" style="padding:0;">
+  <div class="container">
+    <div>
       <div class="section-label">Interactive Explorer</div>
       <div class="section-title">Themes Discovered Across Identity Dimensions</div>
       <p class="section-desc">
-        The SAE discovers interpretable themes for each identity axis. Below, each theme is
-        shown with its <strong>R²</strong> — the fraction of variation explained by standard
-        demographic categories. A <em>low R²</em> means the theme captures something beyond
-        what we'd know just from someone's demographic label.
+        The SAE discovers interpretable themes for each identity axis. Each chart shows how
+        themes vary in prevalence across demographic groups — revealing patterns that go
+        beyond what standard closed-category survey questions capture.
       </p>
     </div>
 
@@ -789,11 +652,6 @@
 
     <!-- RACE PANEL -->
     <div class="theme-panel active" id="panel-race">
-      <div class="r2-context-box">
-        <strong>R² baseline:</strong> Regression of each theme on standardized race/ethnicity categories —
-        <span class="r2-cats">Asian, Black or African American, White, Hispanic or Latino, Middle Eastern or North African, Native Hawaiian or Pacific Islander, American Indian or Alaska Native, Some Other Race</span>.
-        A low R² indicates the theme captures information <em>beyond</em> what closed demographic checkboxes reveal.
-      </div>
       <div class="theme-figure">
         <img src="figures/custom_race_themes_barchart_legend_True.png" alt="Race themes by demographic category" />
         <div class="theme-figure-caption">
@@ -801,21 +659,17 @@
           activates the theme. Themes are ordered by the maximum difference across groups.
         </div>
       </div>
-      <div class="themes-r2-legend">
-        <span>R² (explained by standard categories):</span>
-        <div class="r2-legend-bar"></div>
-        <span>0 → 1</span>
+      <div class="sort-bar">
+        Sort by:
+        <button class="sort-btn active" onclick="sortThemes('race','r2-asc')" id="sort-race-r2-asc">R² low→high</button>
+        <button class="sort-btn" onclick="sortThemes('race','r2-desc')" id="sort-race-r2-desc">R² high→low</button>
+        <button class="sort-btn" onclick="sortThemes('race','name')" id="sort-race-name">Name</button>
       </div>
       <div class="theme-list" id="themes-race"></div>
     </div>
 
     <!-- GENDER PANEL -->
     <div class="theme-panel" id="panel-gender">
-      <div class="r2-context-box">
-        <strong>R² baseline:</strong> Regression of each theme on standardized gender categories —
-        <span class="r2-cats">Gender identity (Man, Woman, or Some other way) × Transgender status (Yes, No, or Prefer not to answer)</span>.
-        A low R² indicates the theme captures information <em>beyond</em> what closed demographic checkboxes reveal.
-      </div>
       <div class="theme-figure">
         <img src="figures/custom_gender_themes_barchart_legend_True.png" alt="Gender themes by category" />
         <div class="theme-figure-caption">
@@ -823,21 +677,17 @@
           activates the theme. Themes are ordered by the maximum difference across groups.
         </div>
       </div>
-      <div class="themes-r2-legend">
-        <span>R² (explained by standard categories):</span>
-        <div class="r2-legend-bar"></div>
-        <span>0 → 1</span>
+      <div class="sort-bar">
+        Sort by:
+        <button class="sort-btn active" onclick="sortThemes('gender','r2-asc')" id="sort-gender-r2-asc">R² low→high</button>
+        <button class="sort-btn" onclick="sortThemes('gender','r2-desc')" id="sort-gender-r2-desc">R² high→low</button>
+        <button class="sort-btn" onclick="sortThemes('gender','name')" id="sort-gender-name">Name</button>
       </div>
       <div class="theme-list" id="themes-gender"></div>
     </div>
 
     <!-- SO PANEL -->
     <div class="theme-panel" id="panel-so">
-      <div class="r2-context-box">
-        <strong>R² baseline:</strong> Regression of each theme on standardized sexual orientation categories —
-        <span class="r2-cats">Straight/heterosexual, Bisexual, Gay, Lesbian, Queer, Pansexual, Asexual/aromantic, Demisexual, Questioning, Sexually fluid, Other, Prefer not to answer</span>.
-        A low R² indicates the theme captures information <em>beyond</em> what closed demographic checkboxes reveal.
-      </div>
       <div class="theme-figure">
         <img src="figures/custom_sexual_orientation_themes_barchart_legend_True.png" alt="Sexual orientation themes by category" />
         <div class="theme-figure-caption">
@@ -845,16 +695,55 @@
           description activates the theme. Themes are ordered by the maximum difference across groups.
         </div>
       </div>
-      <div class="themes-r2-legend">
-        <span>R² (explained by standard categories):</span>
-        <div class="r2-legend-bar"></div>
-        <span>0 → 1</span>
+      <div class="sort-bar">
+        Sort by:
+        <button class="sort-btn active" onclick="sortThemes('so','r2-asc')" id="sort-so-r2-asc">R² low→high</button>
+        <button class="sort-btn" onclick="sortThemes('so','r2-desc')" id="sort-so-r2-desc">R² high→low</button>
+        <button class="sort-btn" onclick="sortThemes('so','name')" id="sort-so-name">Name</button>
       </div>
       <div class="theme-list" id="themes-so"></div>
     </div>
   </div>
 </section>
 
+<!-- ============ AUTHORS ============ -->
+<section id="authors" style="padding-top:56px; padding-bottom:56px;">
+  <div class="container">
+    <div class="section-label">Authors</div>
+    <div class="authors-grid">
+      <div class="author-card">
+        <div class="author-avatar">
+          <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=eRLE0YIAAAAJ&citpid=3" alt="Author photo"
+               onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#6B9FD4,#4A6FA5)'; this.parentElement.innerHTML='JW';" />
+        </div>
+        <div>
+          <div class="author-name"><a href="https://www.jennywang.me" target="_blank">Jenny S. Wang</a></div>
+          <div class="author-affil">Harvard Business School</div>
+        </div>
+      </div>
+      <div class="author-card">
+        <div class="author-avatar">
+          <img src="https://sociology.stanford.edu/sites/sociology/files/styles/hs_medium_square_720x720/public/media/people/aliya_saperstein_170420_0.jpg.webp?h=da6fae6e&itok=05SLKusF" alt="Author photo"
+               onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#9F87CC,#7C6AAF)'; this.parentElement.innerHTML='??';" />
+        </div>
+        <div>
+          <div class="author-name"><a href="https://sociology.stanford.edu/people/aliya-saperstein" target="_blank">Aliya Saperstein</a></div>
+          <div class="author-affil">Stanford University</div>
+        </div>
+      </div>
+      <div class="author-card">
+        <div class="author-avatar">
+          <img src="https://migrate.tech.cornell.edu/authors/profile_emma.jpg" alt="Author photo"
+               onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#D97A9B,#C45A80)'; this.parentElement.innerHTML='??';" />
+        </div>
+        <div>
+          <div class="author-name"><a href="https://people.eecs.berkeley.edu/~emmapierson/" target="_blank">Emma Pierson</a></div>
+          <div class="author-affil">University of California, Berkeley</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ============ CITATION ============ -->
 <section id="citation">
@@ -890,7 +779,7 @@
 <script>
   /* ===== PIPELINE ===== */
   let currentStep = 0;
-  const totalSteps = 5;
+  const totalSteps = 4;
 
   function showStep(n) {
     document.querySelectorAll('.pipeline-panel').forEach((p, i) => {
@@ -916,12 +805,49 @@
     document.getElementById(`panel-${axis}`).classList.add('active');
   }
 
+  /* ===== DEMOGRAPHIC PALETTES ===== */
+  const demoCats = {
+    race: [
+      { label: 'White',    color: '#9BB8D0' },
+      { label: 'Black',    color: '#7B5EA7' },
+      { label: 'Asian',    color: '#5B9BD5' },
+      { label: 'Latino',   color: '#E07B54' },
+      { label: 'MENA',     color: '#5E9E6B' },
+      { label: 'AIAN',     color: '#C4973A' },
+      { label: 'NHPI',     color: '#D97A9B' },
+      { label: '2+ Races', color: '#F0A030' },
+      { label: 'Other',    color: '#A0A0A8' },
+    ],
+    gender: [
+      { label: 'Cis Woman',   color: '#D97A9B' },
+      { label: 'Cis Man',     color: '#6B9FD4' },
+      { label: 'Non-binary',  color: '#9F87CC' },
+      { label: 'Trans Woman', color: '#C45A80' },
+      { label: 'Trans Man',   color: '#4A6FA5' },
+      { label: 'Trans Other', color: '#B8A8D8' },
+      { label: 'No Answer',   color: '#A0A0A8' },
+    ],
+    so: [
+      { label: 'Straight',      color: '#6B9FD4' },
+      { label: 'Gay/Lesbian',   color: '#7B5EA7' },
+      { label: 'Bisexual/Pan',  color: '#E07B54' },
+      { label: 'Queer',         color: '#D97A9B' },
+      { label: 'Asexual/Aro',   color: '#5E9E6B' },
+      { label: 'Demisexual',    color: '#C4973A' },
+      { label: 'Multiple',      color: '#C45A80' },
+      { label: 'Other',         color: '#A0A0A8' },
+    ],
+  };
+
   /* ===== THEME DATA ===== */
+  // demo arrays: proportion (0–1) of each group AMONG respondents who activate this theme.
+  // Order matches demoCats[axis]. Replace with real values from your data.
   const themeData = {
     race: [
       {
         name: "mentions being Black or African American",
         r2: 0.77,
+        demo: [0.03, 0.85, 0.02, 0.04, 0.01, 0.01, 0.01, 0.02, 0.01],
         examples: [
           "Black or African American.",
           "I am a Black African American. My root is from Western Africa.",
@@ -931,6 +857,7 @@
       {
         name: "mentions feelings of not fully belonging or being out of place",
         r2: 0.05,
+        demo: [0.25, 0.15, 0.20, 0.18, 0.08, 0.03, 0.02, 0.06, 0.03],
         examples: [
           "I was raised in a Caribbean country where we spoke French and Creole, but I feel like I don't fully belong anywhere.",
           "I've had the opportunity of growing up with privilege. There are many things in my life I haven't had to worry about because of my ethnicity.",
@@ -940,6 +867,7 @@
       {
         name: "mentions speaking or understanding multiple languages",
         r2: 0.15,
+        demo: [0.10, 0.08, 0.30, 0.35, 0.08, 0.01, 0.02, 0.04, 0.02],
         examples: [
           "I am Filipino American. I can speak Tagalog and other dialects — I find this very unique.",
           "I am a first born Filipino American. Most individuals born here and whose parents are Filipino immigrants don't speak the mother language.",
@@ -949,6 +877,7 @@
       {
         name: "mentions cultural food as important to identity",
         r2: 0.04,
+        demo: [0.20, 0.20, 0.22, 0.22, 0.06, 0.02, 0.02, 0.04, 0.02],
         examples: [
           "We love to eat delicious food that includes all of our unique spices, and we have a very rich history and culture.",
           "Family is a big part of our culture and to help each other out. There is a lot of pride in our food too.",
@@ -958,6 +887,7 @@
       {
         name: "mentions being immigrant or immigrant generation",
         r2: 0.05,
+        demo: [0.15, 0.10, 0.28, 0.28, 0.10, 0.01, 0.02, 0.04, 0.02],
         examples: [
           "I am Filipino but I was born and raised in America. Both of my parents and all of my extended family are immigrants.",
           "I am a half Irish and half Italian third generation American. My great-grandparents were originally from Italy and Ireland.",
@@ -967,6 +897,7 @@
       {
         name: "describes beliefs or values associated with their race",
         r2: 0.06,
+        demo: [0.22, 0.20, 0.18, 0.18, 0.08, 0.03, 0.02, 0.06, 0.03],
         examples: [
           "My race is a respectful and hardworking race. They do things together to achieve a common goal.",
           "My race believes that other races shouldn't be equal. My race has bigoted views, and I don't always feel proud being my race.",
@@ -976,6 +907,7 @@
       {
         name: "mentions being born in the United States",
         r2: 0.01,
+        demo: [0.22, 0.18, 0.20, 0.20, 0.07, 0.03, 0.02, 0.05, 0.03],
         examples: [
           "I was born in China. So I am Chinese American.",
           "I'm a Venezuelan American — born in America to Venezuelan parents.",
@@ -987,6 +919,7 @@
       {
         name: "mentions questioning gender identity",
         r2: 0.35,
+        demo: [0.10, 0.05, 0.20, 0.25, 0.25, 0.10, 0.05],
         examples: [
           "I was born a male, but I've been transitioning to female over the last year. I've always known, but I never had the funds to do so until recently.",
           "I identify as genderfluid and it took me a long time to realize this part of myself.",
@@ -996,6 +929,7 @@
       {
         name: "mentions fluidity or fluctuation in gender identity",
         r2: 0.29,
+        demo: [0.12, 0.06, 0.25, 0.20, 0.22, 0.12, 0.03],
         examples: [
           "I call myself genderfluid. Most days I feel I have no gender, but other days I feel like a woman and others a man.",
           "My gender is a fluid wave that crashes between multiple gender aspects inside. My gender is always changing and adapting to my needs.",
@@ -1005,6 +939,7 @@
       {
         name: "mentions rejecting gender as part of identity",
         r2: 0.25,
+        demo: [0.08, 0.04, 0.40, 0.15, 0.18, 0.12, 0.03],
         examples: [
           "I don't have one. I feel disconnected from (and generally apathetic about) the entire concept of gender.",
           "\"Agender\" is what I normally go with. I also describe it as gender null or gender apathetic. I simply just don't have any personal sense of a gender.",
@@ -1014,6 +949,7 @@
       {
         name: "mentions stereotypically feminine activities or items",
         r2: 0.04,
+        demo: [0.50, 0.20, 0.12, 0.08, 0.06, 0.02, 0.02],
         examples: [
           "I don't consider myself super feminine but I definitely enjoy and partake in things one would deem feminine — like heels, makeup, and fashion.",
           "I am non-binary and trans masculine. I express my gender in a more feminine way but I'm incredibly androgynous.",
@@ -1023,6 +959,7 @@
       {
         name: "mentions traditionally masculine activities or traits",
         r2: 0.03,
+        demo: [0.05, 0.70, 0.08, 0.02, 0.10, 0.03, 0.02],
         examples: [
           "I am a man. I do things that are manly. I usually fix things that are broken.",
           "I am a male. Most of my hobbies are typical male things like hunting and fishing.",
@@ -1032,6 +969,7 @@
       {
         name: "mentions responsibilities within family",
         r2: 0.02,
+        demo: [0.40, 0.42, 0.05, 0.04, 0.05, 0.02, 0.02],
         examples: [
           "Someone who takes charge in the household and provides for their family — has a father figure.",
           "As a man it's my duty to make sure I provide for my family and protect my loved ones.",
@@ -1041,6 +979,7 @@
       {
         name: "directly mentions being male or a man",
         r2: 0.76,
+        demo: [0.02, 0.82, 0.03, 0.01, 0.08, 0.02, 0.02],
         examples: [
           "I am an Intersex Male. A man.",
           "I am a man that was born a man.",
@@ -1052,6 +991,7 @@
       {
         name: "mentions questioning sexual orientation",
         r2: 0.17,
+        demo: [0.45, 0.10, 0.22, 0.08, 0.05, 0.04, 0.04, 0.02],
         examples: [
           "This is kind of a tricky one for me. While I am mostly what others would label Heterosexual, I must admit that I find myself rather Bi-Curious at times.",
           "I am heterosexual but do have curiosities. I don't know if there is enough to toss me into another category.",
@@ -1061,6 +1001,7 @@
       {
         name: "distinguishes between romantic & sexual orientation",
         r2: 0.17,
+        demo: [0.20, 0.12, 0.28, 0.12, 0.15, 0.08, 0.04, 0.01],
         examples: [
           "I would say I'm bisexual. Specifically, I'm sexually attracted to men and women but only romantically attracted to men.",
           "I'm unsure of my sexual orientation because I have had attraction to both men and women. I've never had romantic feelings for anyone so that also adds to the confusion.",
@@ -1070,6 +1011,7 @@
       {
         name: "mentions attraction to multiple genders",
         r2: 0.48,
+        demo: [0.05, 0.05, 0.60, 0.18, 0.03, 0.04, 0.04, 0.01],
         examples: [
           "As a bisexual person, I am attracted to individuals of more than one gender, finding beauty and connection in diverse expressions of identity.",
           "I'm bisexual — as in, 'genders like mine and genders not like mine.' Bisexuality isn't binary or dualistic.",
@@ -1079,6 +1021,7 @@
       {
         name: "mentions attraction not based on gender or sex",
         r2: 0.51,
+        demo: [0.05, 0.05, 0.55, 0.20, 0.05, 0.04, 0.05, 0.01],
         examples: [
           "I am not attracted to people based on their gender or sex. I find people attractive for who they are as people.",
           "I am pansexual, which means I don't base my attraction on someone's gender/sex. My attraction is based on a person's heart.",
@@ -1088,6 +1031,7 @@
       {
         name: "mentions age of realization or coming out",
         r2: 0.06,
+        demo: [0.20, 0.35, 0.22, 0.12, 0.04, 0.03, 0.03, 0.01],
         examples: [
           "I am gay. I found out when I was very young — in middle school.",
           "I'm a lesbian both romantically and sexually. I learned this about myself around puberty, which happened young for me at 9 years old.",
@@ -1097,6 +1041,7 @@
       {
         name: "mentions never questioning sexual orientation",
         r2: 0.07,
+        demo: [0.75, 0.08, 0.06, 0.04, 0.03, 0.01, 0.02, 0.01],
         examples: [
           "I HAVE ALWAYS BEEN A STRAIGHT MALE. HAVE NEVER QUESTIONED MY ORIENTATION.",
           "I am heterosexual and have always been my whole life. I have only seen women as romantic interests.",
@@ -1106,6 +1051,7 @@
       {
         name: "mentions reluctance to form intimate connections",
         r2: 0.28,
+        demo: [0.25, 0.15, 0.20, 0.10, 0.20, 0.06, 0.03, 0.01],
         examples: [
           "I have rarely been the dating type, but I did eventually end up with my lovely current long-term partner. I really do struggle socially in some ways.",
           "I have a much larger preference for males than I do for any women. I do like effeminate qualities, but I personally can't connect with women intimately.",
@@ -1115,70 +1061,72 @@
     ]
   };
 
-  /* ===== COLOR MAPS ===== */
-  const axisColor = { race: '#6B9FD4', gender: '#9F87CC', so: '#D97A9B' };
-
   /* ===== BUILD THEME LISTS ===== */
   function buildThemes() {
-    const axisMap = { race: 'race', gender: 'gender', so: 'so' };
-    Object.entries(axisMap).forEach(([axis]) => {
-      const container = document.getElementById(`themes-${axis}`);
-      const color = axisColor[axis];
-      themeData[axis].forEach((theme, i) => {
-        const item = document.createElement('div');
-        item.className = 'theme-item';
-        item.id = `theme-${axis}-${i}`;
-
-        const barPct = Math.min(theme.r2 * 100, 100).toFixed(0);
-        const noveltyLabel = theme.r2 <= 0.10
-          ? '✦ Novel' : theme.r2 <= 0.30
-          ? 'Moderate' : '● Predicted';
-        const noveltyTitle = theme.r2 <= 0.10
-          ? 'Low R² — this theme reveals information beyond standard categories'
-          : theme.r2 <= 0.30
-          ? 'Moderate R² — partially explained by standard categories'
-          : 'High R² — largely predicted by standard demographic categories';
-
-        const exampleHtml = theme.examples.slice(0, 2).map(ex =>
-          `<div class="example-quote ${axis}">"${ex}"</div>`
-        ).join('');
-
-        item.innerHTML = `
-          <div class="theme-header" onclick="toggleTheme('${axis}', ${i})">
-            <div class="theme-name">${theme.name}</div>
-            <div class="theme-r2-wrap">
-              <div class="theme-r2-bar-bg">
-                <div class="theme-r2-bar-fill" style="width:${barPct}%; background:${color};"></div>
-              </div>
-              <div class="theme-r2-label" style="color:${color};" title="${noveltyTitle}">
-                R²=${theme.r2.toFixed(2)}
-              </div>
-            </div>
-            <svg class="theme-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
-          </div>
-          <div class="theme-examples">
-            <p class="r2-explainer">
-              <strong>R² = ${theme.r2.toFixed(2)}:</strong> Standard demographic categories explain
-              ${(theme.r2 * 100).toFixed(0)}% of variation in who mentions this theme.
-              ${theme.r2 <= 0.10
-                ? 'This theme reveals information that goes <em>beyond</em> what we\'d know from someone\'s demographic category alone.'
-                : theme.r2 <= 0.30
-                ? 'This theme captures some within-group variation not fully explained by demographic categories.'
-                : 'This theme closely tracks demographic categories and could partly replace a closed survey question.'
-              }
-            </p>
-            <div class="example-quotes">${exampleHtml}</div>
-          </div>`;
-        container.appendChild(item);
-      });
-    });
+    ['race', 'gender', 'so'].forEach(axis => sortThemes(axis, 'r2-asc'));
   }
 
-  function toggleTheme(axis, i) {
-    const item = document.getElementById(`theme-${axis}-${i}`);
-    item.classList.toggle('open');
+  /* ===== SORT ===== */
+  const currentSort = { race: 'r2-asc', gender: 'r2-asc', so: 'r2-asc' };
+
+  function sortThemes(axis, mode) {
+    currentSort[axis] = mode;
+    ['r2-desc', 'r2-asc', 'name'].forEach(m => {
+      const btn = document.getElementById(`sort-${axis}-${m}`);
+      if (btn) btn.classList.toggle('active', m === mode);
+    });
+    const container = document.getElementById(`themes-${axis}`);
+    container.innerHTML = '';
+    const sorted = [...themeData[axis]];
+    if (mode === 'r2-desc') sorted.sort((a, b) => b.r2 - a.r2);
+    else if (mode === 'r2-asc') sorted.sort((a, b) => a.r2 - b.r2);
+    else sorted.sort((a, b) => a.name.localeCompare(b.name));
+    sorted.forEach((theme, i) => container.appendChild(buildThemeItem(axis, theme, i)));
+  }
+
+  function buildThemeItem(axis, theme, i) {
+    const cats = demoCats[axis];
+    // Normalize demo to sum to 1
+    const total = theme.demo.reduce((s, v) => s + v, 0);
+    const segs = cats.map((c, j) => ({
+      label: c.label, color: c.color, pct: (theme.demo[j] / total) * 100
+    })).filter(s => s.pct > 0.5);
+
+    const barHtml = segs.map(s =>
+      `<div class="demo-bar-seg" style="width:${s.pct.toFixed(1)}%;background:${s.color};"
+            title="${s.label}: ${s.pct.toFixed(0)}%"></div>`
+    ).join('');
+
+    const legendHtml = cats.map((c, j) => {
+      const pct = (theme.demo[j] / total * 100).toFixed(0);
+      return `<span class="demo-legend-item">
+        <span class="demo-legend-dot" style="background:${c.color};"></span>${c.label} ${pct}%
+      </span>`;
+    }).join('');
+
+    const exampleHtml = theme.examples.slice(0, 2).map(ex =>
+      `<div class="example-quote ${axis}">"${ex}"</div>`
+    ).join('');
+
+    const item = document.createElement('div');
+    item.className = 'theme-item';
+    item.id = `theme-${axis}-sort-${i}`;
+    item.innerHTML = `
+      <div class="theme-header" onclick="this.parentElement.classList.toggle('open')">
+        <div class="theme-name-row">
+          <div class="theme-name">${theme.name}</div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);flex-shrink:0;">R²=${theme.r2.toFixed(2)}</span>
+          <svg class="theme-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+        <div class="demo-bar">${barHtml}</div>
+      </div>
+      <div class="theme-examples">
+        <div class="demo-legend">${legendHtml}</div>
+        <div class="example-quotes" style="margin-top:12px;">${exampleHtml}</div>
+      </div>`;
+    return item;
   }
 
   /* ===== CITATION COPY ===== */
