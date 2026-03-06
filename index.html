@@ -41,8 +41,88 @@
     .container--wide { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
     section { padding: 72px 0; }
 
-    /* ========= NAV ========= */
-    nav {
+    /* ========= LEFT DOT NAV ========= */
+    .side-nav {
+      position: fixed;
+      left: 28px; top: 50%;
+      transform: translateY(-50%);
+      z-index: 90;
+      display: flex; flex-direction: column;
+      padding: 4px 0;
+    }
+    .side-nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 9px 0; cursor: pointer;
+      text-decoration: none;
+      position: relative;
+    }
+    /* vertical connecting line */
+    .side-nav-item::before {
+      content: ''; position: absolute;
+      left: 4px; top: 0; bottom: 0;
+      width: 1.5px; background: var(--border);
+    }
+    .side-nav-item:first-child::before { top: 50%; }
+    .side-nav-item:last-child::before  { bottom: 50%; }
+    .side-nav-dot {
+      width: 11px; height: 11px; border-radius: 50%;
+      border: 2px solid var(--border);
+      background: transparent; flex-shrink: 0;
+      transition: all 0.2s; z-index: 1;
+      position: relative;
+    }
+    .side-nav-item.active .side-nav-dot {
+      background: var(--navy); border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(74,111,165,0.15);
+    }
+    .side-nav-label {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--muted); white-space: nowrap;
+      opacity: 0; transform: translateX(-6px);
+      transition: opacity 0.2s, transform 0.2s, color 0.2s;
+    }
+    .side-nav:hover .side-nav-label { opacity: 1; transform: translateX(0); }
+    .side-nav-item.active .side-nav-label { opacity: 1; transform: translateX(0); color: var(--navy); }
+
+    /* ===== MOBILE BOTTOM NAV ===== */
+    @media (max-width: 1260px) {
+      .side-nav {
+        left: 0; right: 0;
+        top: auto; bottom: 0;
+        transform: none;
+        flex-direction: row;
+        justify-content: center;
+        background: rgba(248,245,241,0.92);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border);
+        padding: 0 8px;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        gap: 0;
+      }
+      .side-nav-item {
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        padding: 10px 16px;
+      }
+      .side-nav-item::before { display: none; }
+      .side-nav-label {
+        opacity: 1; transform: none;
+        font-size: 9px; letter-spacing: 0.07em;
+        text-shadow: 0 1px 3px rgba(255,255,255,0.8), 0 -1px 3px rgba(255,255,255,0.8);
+      }
+      .side-nav:hover .side-nav-label { transform: none; }
+      .side-nav-item.active .side-nav-label { transform: none; }
+      .side-nav-dot {
+        width: 9px; height: 9px;
+        filter: drop-shadow(0 0 2px rgba(255,255,255,0.7));
+      }
+    }
+
+    /* ========= NAV (legacy, unused) ========= */
+    nav:not(.side-nav) {
       position: sticky; top: 0; z-index: 100;
       background: rgba(248,245,241,0.95);
       backdrop-filter: blur(8px);
@@ -394,6 +474,16 @@
     .example-quote.so     { border-left-color: var(--so); }
 
 
+    /* ========= EXPAND THEMES BUTTON ========= */
+    .expand-themes-btn {
+      display: block; width: 100%; margin-top: 12px;
+      padding: 11px 0; border-radius: var(--radius);
+      border: 1.5px dashed var(--border); background: transparent;
+      font-size: 13px; font-weight: 600; color: var(--muted);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .expand-themes-btn:hover { border-color: var(--navy); color: var(--navy); background: rgba(74,111,165,0.04); }
+
     /* ========= SORT CONTROLS ========= */
     .sort-bar {
       display: flex; align-items: center; gap: 8px;
@@ -410,10 +500,29 @@
     .sort-btn:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
 
     /* ========= SUBMIT SECTION ========= */
-    .sample-responses {
-      display: flex; flex-direction: column; gap: 10px;
+    .sample-scroll-wrap {
+      position: relative;
       margin: 20px 0 28px;
     }
+    .sample-scroll-wrap::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 44px;
+      background: linear-gradient(to bottom, transparent, var(--white));
+      pointer-events: none;
+      border-radius: 0 0 8px 8px;
+      transition: opacity 0.2s;
+    }
+    .sample-scroll-wrap.scrolled-to-end::after { opacity: 0; }
+    .sample-responses {
+      display: flex; flex-direction: column; gap: 10px;
+      max-height: 216px; overflow-y: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .sample-responses::-webkit-scrollbar { width: 4px; }
+    .sample-responses::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
     .sample-response {
       font-family: 'Lora', serif;
       font-size: 14px; font-style: italic;
@@ -422,6 +531,7 @@
       padding: 8px 14px;
       background: var(--bg);
       border-radius: 0 6px 6px 0;
+      flex-shrink: 0;
     }
     .sample-response.race   { border-left-color: var(--race); }
     .sample-response.gender { border-left-color: var(--gender); }
@@ -552,12 +662,43 @@
       .stat { flex: 1 1 120px; }
       .data-card { padding: 24px 20px; }
     }
+    @media (max-width: 1260px) {
+      body { padding-bottom: 60px; }
+    }
   </style>
 </head>
 <body>
 
+<!-- ============ LEFT DOT NAV ============ -->
+<nav class="side-nav" id="side-nav">
+  <a class="side-nav-item active" data-section="intro" href="#intro">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-label">Intro</span>
+  </a>
+  <a class="side-nav-item" data-section="pipeline" href="#pipeline">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-label">Methodology</span>
+  </a>
+  <a class="side-nav-item" data-section="themes" href="#themes">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-label">Explorer</span>
+  </a>
+  <a class="side-nav-item" data-section="submit" href="#submit">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-label">Contribute</span>
+  </a>
+  <a class="side-nav-item" data-section="authors" href="#authors">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-label">Authors</span>
+  </a>
+  <a class="side-nav-item" data-section="citation" href="#citation">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-label">Citation</span>
+  </a>
+</nav>
+
 <!-- ============ HERO ============ -->
-<div class="hero">
+<div class="hero" id="intro">
   <div class="container">
     <!-- <div class="hero-tag">NLP &middot; Computational Social Science</div> -->
     <h1>In Your Own Words</h1>
@@ -724,10 +865,10 @@
     <!-- RACE PANEL -->
     <div class="theme-panel active" id="panel-race">
       <div class="theme-figure">
-        <img src="figures/custom_race_themes_barchart_legend_True.png" alt="Race themes by demographic category" />
+        <img src="figures/custom_race_themes_barchart_legend_True.png" alt="Race Themes By Category" />
         <div class="theme-figure-caption">
           Each bar shows the proportion of respondents in each racial/ethnic category whose free-text description
-          activates the theme. Themes are ordered by the maximum difference across groups.
+          activates the theme. 
         </div>
       </div>
       <div class="sort-bar">
@@ -742,10 +883,10 @@
     <!-- GENDER PANEL -->
     <div class="theme-panel" id="panel-gender">
       <div class="theme-figure">
-        <img src="figures/custom_gender_themes_barchart_legend_True.png" alt="Gender themes by category" />
+        <img src="figures/custom_gender_themes_barchart_legend_True.png" alt="Gender Themes By Category" />
         <div class="theme-figure-caption">
           Each bar shows the proportion of respondents in each gender category whose free-text description
-          activates the theme. Themes are ordered by the maximum difference across groups.
+          activates the theme. 
         </div>
       </div>
       <div class="sort-bar">
@@ -760,10 +901,10 @@
     <!-- SO PANEL -->
     <div class="theme-panel" id="panel-so">
       <div class="theme-figure">
-        <img src="figures/custom_sexual_orientation_themes_barchart_legend_True.png" alt="Sexual orientation themes by category" />
+        <img src="figures/custom_sexual_orientation_themes_barchart_legend_True.png" alt="Sexual Orientation Themes By Category" />
         <div class="theme-figure-caption">
           Each bar shows the proportion of respondents in each sexual orientation category whose free-text
-          description activates the theme. Themes are ordered by the maximum difference across groups.
+          description activates the theme.
         </div>
       </div>
       <div class="sort-bar">
@@ -787,22 +928,49 @@
       we invite you to describe your own race, gender, or sexual orientation in your own words.
     </p>
 
-    <!-- Sample responses by axis -->
+    <!-- Sample responses by axis (10 per axis, ~3 visible, scroll for rest) -->
     <div id="submit-samples">
-      <div class="sample-responses" id="samples-race">
-        <div class="sample-response race">"I am a Black African American. My root is from Western Africa."</div>
-        <div class="sample-response race">"I am Filipino American. I can speak Tagalog and other dialects — I find this very unique."</div>
-        <div class="sample-response race">"I feel like I'm caught between two worlds — not quite fitting into either the majority or my heritage group."</div>
+      <div class="sample-scroll-wrap" id="wrap-race">
+        <div class="sample-responses" id="samples-race">
+          <div class="sample-response race">"Black or African American."</div>
+          <div class="sample-response race">"I am a Black African American. My root is from Western Africa."</div>
+          <div class="sample-response race">"I feel like I'm caught between two worlds — not quite fitting into either the majority or my heritage group."</div>
+          <div class="sample-response race">"I am Filipino American. I can speak Tagalog and other dialects — I find this very unique."</div>
+          <div class="sample-response race">"My family speaks both English and Spanish at home, which has been central to my cultural identity."</div>
+          <div class="sample-response race">"We love to eat delicious food that includes all of our unique spices, and we have a very rich history and culture."</div>
+          <div class="sample-response race">"I am Filipino but I was born and raised in America. Both of my parents and all of my extended family are immigrants."</div>
+          <div class="sample-response race">"I am a half Irish and half Italian third generation American. My great-grandparents were originally from Italy and Ireland."</div>
+          <div class="sample-response race">"We come from a culture that values community, family above all, and honoring our ancestors."</div>
+          <div class="sample-response race">"Born and raised in the United States, but my roots go back to the Philippines."</div>
+        </div>
       </div>
-      <div class="sample-responses" id="samples-gender" style="display:none;">
-        <div class="sample-response gender">"I call myself genderfluid. Most days I feel I have no gender, but other days I feel like a woman and others a man."</div>
-        <div class="sample-response gender">"I am non-binary and trans masculine. I express my gender in a more feminine way but I'm incredibly androgynous."</div>
-        <div class="sample-response gender">"As a man it's my duty to make sure I provide for my family and protect my loved ones."</div>
+      <div class="sample-scroll-wrap" id="wrap-gender" style="display:none;">
+        <div class="sample-responses" id="samples-gender">
+          <div class="sample-response gender">"I call myself genderfluid. Most days I feel I have no gender, but other days I feel like a woman and others a man."</div>
+          <div class="sample-response gender">"I was born a male, but I've been transitioning to female over the last year. I've always known, but I never had the funds to do so until recently."</div>
+          <div class="sample-response gender">"I don't have one. I feel disconnected from (and generally apathetic about) the entire concept of gender."</div>
+          <div class="sample-response gender">"I am non-binary and trans masculine. I express my gender in a more feminine way but I'm incredibly androgynous."</div>
+          <div class="sample-response gender">"Some days I wake up feeling entirely masculine, others entirely feminine. I've stopped trying to pin it down."</div>
+          <div class="sample-response gender">"I don't consider myself super feminine but I definitely enjoy and partake in things one would deem feminine — like heels, makeup, and fashion."</div>
+          <div class="sample-response gender">"I am a man. I do things that are manly. I usually fix things that are broken."</div>
+          <div class="sample-response gender">"As a man it's my duty to make sure I provide for my family and protect my loved ones."</div>
+          <div class="sample-response gender">"My identity as a woman is deeply tied to being a mother and keeping the family together."</div>
+          <div class="sample-response gender">"Male. That is all."</div>
+        </div>
       </div>
-      <div class="sample-responses" id="samples-so" style="display:none;">
-        <div class="sample-response so">"I am pansexual, which means I don't base my attraction on someone's gender/sex."</div>
-        <div class="sample-response so">"I'm bisexual — as in, 'genders like mine and genders not like mine.' Bisexuality isn't binary or dualistic."</div>
-        <div class="sample-response so">"I've been questioning for a few years now. I know I'm not fully straight, but I haven't landed on a label yet."</div>
+      <div class="sample-scroll-wrap" id="wrap-so" style="display:none;">
+        <div class="sample-responses" id="samples-so">
+          <div class="sample-response so">"This is kind of a tricky one for me. While I am mostly what others would label Heterosexual, I must admit that I find myself rather Bi-Curious at times."</div>
+          <div class="sample-response so">"I've been questioning for a few years now. I know I'm not fully straight, but I haven't landed on a label yet."</div>
+          <div class="sample-response so">"As a bisexual person, I am attracted to individuals of more than one gender, finding beauty and connection in diverse expressions of identity."</div>
+          <div class="sample-response so">"I'm bisexual — as in, 'genders like mine and genders not like mine.' Bisexuality isn't binary or dualistic."</div>
+          <div class="sample-response so">"I am pansexual, which means I don't base my attraction on someone's gender/sex. My attraction is based on a person's heart."</div>
+          <div class="sample-response so">"I am not attracted to people based on their gender or sex. I find people attractive for who they are as people."</div>
+          <div class="sample-response so">"I am gay. I found out when I was very young — in middle school."</div>
+          <div class="sample-response so">"I didn't come out until I was 40. For most of my life I thought I was straight because that's all I knew."</div>
+          <div class="sample-response so">"I am heterosexual and have always been my whole life. I have only seen women as romantic interests."</div>
+          <div class="sample-response so">"Forming romantic connections has always been hard for me. I'm not sure if it's demisexuality or just anxiety."</div>
+        </div>
       </div>
     </div>
 
@@ -976,224 +1144,190 @@
   };
 
   /* ===== THEME DATA ===== */
-  // demo arrays: proportion (0–1) of each group AMONG respondents who activate this theme.
-  // Order matches demoCats[axis]. Replace with real values from your data.
+  // r2   = LLM interpretation fidelity (F1 vs. human annotations). Filtered to F1 > 0.50.
+  // demo = proportion of each demographic group among respondents who activate this theme.
+  //        Currently uniform placeholders — replace with real values from your data.
+  //        Array order must match demoCats[axis].
+  // examples = add up to 3 representative free-text responses from your dataset.
   const themeData = {
     race: [
-      {
-        name: "mentions being Black or African American",
-        r2: 0.77,
-        demo: [0.03, 0.85, 0.02, 0.04, 0.01, 0.01, 0.01, 0.02, 0.01],
-        examples: [
-          "Black or African American.",
-          "I am a Black African American. My root is from Western Africa.",
-          "I am Black American. Being a Black American has heavily influenced my experiences in the world."
-        ]
-      },
-      {
-        name: "mentions feelings of not fully belonging or being out of place",
-        r2: 0.05,
-        demo: [0.25, 0.15, 0.20, 0.18, 0.08, 0.03, 0.02, 0.06, 0.03],
-        examples: [
-          "I was raised in a Caribbean country where we spoke French and Creole, but I feel like I don't fully belong anywhere.",
-          "I've had the opportunity of growing up with privilege. There are many things in my life I haven't had to worry about because of my ethnicity.",
-          "I feel like I'm caught between two worlds — not quite fitting into either the majority or my heritage group."
-        ]
-      },
-      {
-        name: "mentions speaking or understanding multiple languages",
-        r2: 0.15,
-        demo: [0.10, 0.08, 0.30, 0.35, 0.08, 0.01, 0.02, 0.04, 0.02],
-        examples: [
-          "I am Filipino American. I can speak Tagalog and other dialects — I find this very unique.",
-          "I am a first born Filipino American. Most individuals born here and whose parents are Filipino immigrants don't speak the mother language.",
-          "My family speaks both English and Spanish at home, which has been central to my cultural identity."
-        ]
-      },
-      {
-        name: "mentions cultural food as important to identity",
-        r2: 0.04,
-        demo: [0.20, 0.20, 0.22, 0.22, 0.06, 0.02, 0.02, 0.04, 0.02],
-        examples: [
-          "We love to eat delicious food that includes all of our unique spices, and we have a very rich history and culture.",
-          "Family is a big part of our culture and to help each other out. There is a lot of pride in our food too.",
-          "Food has always been a way for our family to connect to our heritage — traditional dishes at every gathering."
-        ]
-      },
-      {
-        name: "mentions being immigrant or immigrant generation",
-        r2: 0.05,
-        demo: [0.15, 0.10, 0.28, 0.28, 0.10, 0.01, 0.02, 0.04, 0.02],
-        examples: [
-          "I am Filipino but I was born and raised in America. Both of my parents and all of my extended family are immigrants.",
-          "I am a half Irish and half Italian third generation American. My great-grandparents were originally from Italy and Ireland.",
-          "I am second-generation American. My parents came from Mexico, and I grew up navigating both cultures."
-        ]
-      },
-      {
-        name: "describes beliefs or values associated with their race",
-        r2: 0.06,
-        demo: [0.22, 0.20, 0.18, 0.18, 0.08, 0.03, 0.02, 0.06, 0.03],
-        examples: [
-          "My race is a respectful and hardworking race. They do things together to achieve a common goal.",
-          "My race believes that other races shouldn't be equal. My race has bigoted views, and I don't always feel proud being my race.",
-          "We come from a culture that values community, family above all, and honoring our ancestors."
-        ]
-      },
-      {
-        name: "mentions being born in the United States",
-        r2: 0.01,
-        demo: [0.22, 0.18, 0.20, 0.20, 0.07, 0.03, 0.02, 0.05, 0.03],
-        examples: [
-          "I was born in China. So I am Chinese American.",
-          "I'm a Venezuelan American — born in America to Venezuelan parents.",
-          "Born and raised in the United States, but my roots go back to the Philippines."
-        ]
-      }
+      { name: "mentions celebrating Christian holidays", r2: 0.780, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "uses the phrase 'I would describe my race' or a close variation", r2: 0.907, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions speaking English or American English as a primary language", r2: 0.900, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions being first, second, or third generation American or immigrant", r2: 0.752, demo: [1,1,1,1,1,1,1,1,1], examples: [
+        "I am Filipino but I was born and raised in America. Both of my parents and all of my extended family are immigrants.",
+        "I am a half Irish and half Italian third generation American. My great-grandparents were originally from Italy and Ireland.",
+        "I am second-generation American. My parents came from Mexico, and I grew up navigating both cultures."
+      ]},
+      { name: "mentions pride in Black or African American identity", r2: 0.880, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "uses the phrase 'I am' followed by a race or ethnicity descriptor without elaboration", r2: 0.752, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "self-describes as mixed or multiracial", r2: 0.787, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly self-describes as white without mentioning other ethnicities or cultural heritages", r2: 0.861, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions specific regions or countries of ancestral origin", r2: 0.686, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions European ancestry or descent explicitly", r2: 0.645, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions being Black or African American", r2: 0.980, demo: [1,1,1,1,1,1,1,1,1], examples: [
+        "Black or African American.",
+        "I am a Black African American. My root is from Western Africa.",
+        "I am Black American. Being a Black American has heavily influenced my experiences in the world."
+      ]},
+      { name: "mentions speaking or understanding multiple languages or specific non-English languages", r2: 0.707, demo: [1,1,1,1,1,1,1,1,1], examples: [
+        "I am Filipino American. I can speak Tagalog and other dialects — I find this very unique.",
+        "I am a first born Filipino American. Most individuals born here and whose parents are Filipino immigrants don't speak the mother language.",
+        "My family speaks both English and Spanish at home, which has been central to my cultural identity."
+      ]},
+      { name: "mentions being Native American or belonging to a Native American tribe", r2: 0.969, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "self-describes as South Asian or mentions a South Asian country or ethnicity", r2: 0.750, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "uses single-word or very short descriptions of race/ethnicity (1-3 words)", r2: 0.689, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions feelings of not fully belonging or being out of place related to race/ethnicity", r2: 0.672, demo: [1,1,1,1,1,1,1,1,1], examples: [
+        "I was raised in a Caribbean country where we spoke French and Creole, but I feel like I don't fully belong anywhere.",
+        "I've had the opportunity of growing up with privilege. There are many things in my life I haven't had to worry about because of my ethnicity.",
+        "I feel like I'm caught between two worlds — not quite fitting into either the majority or my heritage group."
+      ]},
+      { name: "mentions being Mexican-American or Mexican", r2: 0.990, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly states a lack of cultural or ethnic identity or traditions", r2: 0.970, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions European ancestry in detail, including specific countries or regions", r2: 0.679, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions parentage explicitly (e.g., 'my mom is X and my dad is Y')", r2: 0.864, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions the languages spoken by themselves or their family", r2: 0.775, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly uses the phrase 'identify as' or 'identify with' to describe their race or ethnicity", r2: 0.744, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "describes beliefs or values associated with their race", r2: 0.700, demo: [1,1,1,1,1,1,1,1,1], examples: [
+        "My race is a respectful and hardworking race. They do things together to achieve a common goal.",
+        "My race believes that other races shouldn't be equal. My race has bigoted views, and I don't always feel proud being my race.",
+        "We come from a culture that values community, family above all, and honoring our ancestors."
+      ]},
+      { name: "mentions whiteness or being white", r2: 0.609, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions being Vietnamese or Vietnamese-American", r2: 0.507, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions being born in the United States or America", r2: 0.823, demo: [1,1,1,1,1,1,1,1,1], examples: [
+        "I was born in China. So I am Chinese American.",
+        "I'm a Venezuelan American — born in America to Venezuelan parents.",
+        "Born and raised in the United States, but my roots go back to the Philippines."
+      ]},
+      { name: "mentions speaking Spanish or Spanish as part of family or cultural identity", r2: 0.800, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions traditional or cultural food as an important aspect of their identity", r2: 0.621, demo: [1,1,1,1,1,1,1,1,1], examples: [
+        "We love to eat delicious food that includes all of our unique spices, and we have a very rich history and culture.",
+        "Family is a big part of our culture and to help each other out. There is a lot of pride in our food too.",
+        "Food has always been a way for our family to connect to our heritage — traditional dishes at every gathering."
+      ]},
+      { name: "mentions African heritage or African ancestry", r2: 0.723, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "self-describes as white American", r2: 0.762, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
     ],
     gender: [
-      {
-        name: "mentions questioning gender identity",
-        r2: 0.35,
-        demo: [0.10, 0.05, 0.20, 0.25, 0.25, 0.10, 0.05],
-        examples: [
-          "I was born a male, but I've been transitioning to female over the last year. I've always known, but I never had the funds to do so until recently.",
-          "I identify as genderfluid and it took me a long time to realize this part of myself.",
-          "It wasn't until my late teens that I realized the discomfort I felt wasn't just anxiety — it was about my gender."
-        ]
-      },
-      {
-        name: "mentions fluidity or fluctuation in gender identity",
-        r2: 0.29,
-        demo: [0.12, 0.06, 0.25, 0.20, 0.22, 0.12, 0.03],
-        examples: [
-          "I call myself genderfluid. Most days I feel I have no gender, but other days I feel like a woman and others a man.",
-          "My gender is a fluid wave that crashes between multiple gender aspects inside. My gender is always changing and adapting to my needs.",
-          "Some days I wake up feeling entirely masculine, others entirely feminine. I've stopped trying to pin it down."
-        ]
-      },
-      {
-        name: "mentions rejecting gender as part of identity",
-        r2: 0.25,
-        demo: [0.08, 0.04, 0.40, 0.15, 0.18, 0.12, 0.03],
-        examples: [
-          "I don't have one. I feel disconnected from (and generally apathetic about) the entire concept of gender.",
-          "\"Agender\" is what I normally go with. I also describe it as gender null or gender apathetic. I simply just don't have any personal sense of a gender.",
-          "Gender has never been a meaningful category for me. I exist outside of it."
-        ]
-      },
-      {
-        name: "mentions stereotypically feminine activities or items",
-        r2: 0.04,
-        demo: [0.50, 0.20, 0.12, 0.08, 0.06, 0.02, 0.02],
-        examples: [
-          "I don't consider myself super feminine but I definitely enjoy and partake in things one would deem feminine — like heels, makeup, and fashion.",
-          "I am non-binary and trans masculine. I express my gender in a more feminine way but I'm incredibly androgynous.",
-          "Even though I'm a man, I love cooking, fashion, and things culturally coded as feminine. It's just who I am."
-        ]
-      },
-      {
-        name: "mentions traditionally masculine activities or traits",
-        r2: 0.03,
-        demo: [0.05, 0.70, 0.08, 0.02, 0.10, 0.03, 0.02],
-        examples: [
-          "I am a man. I do things that are manly. I usually fix things that are broken.",
-          "I am a male. Most of my hobbies are typical male things like hunting and fishing.",
-          "Growing up I was always into sports, camping, and being outdoors. That's how I was raised to be a man."
-        ]
-      },
-      {
-        name: "mentions responsibilities within family",
-        r2: 0.02,
-        demo: [0.40, 0.42, 0.05, 0.04, 0.05, 0.02, 0.02],
-        examples: [
-          "Someone who takes charge in the household and provides for their family — has a father figure.",
-          "As a man it's my duty to make sure I provide for my family and protect my loved ones.",
-          "My identity as a woman is deeply tied to being a mother and keeping the family together."
-        ]
-      },
-      {
-        name: "directly mentions being male or a man",
-        r2: 0.76,
-        demo: [0.02, 0.82, 0.03, 0.01, 0.08, 0.02, 0.02],
-        examples: [
-          "I am an Intersex Male. A man.",
-          "I am a man that was born a man.",
-          "Male. That is all."
-        ]
-      }
+      { name: "uses the exact word 'male'", r2: 0.909, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions childhood experiences related to gender roles or expectations", r2: 0.782, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions responsibility to provide for family", r2: 0.551, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions giving birth or having children as a significant aspect of their identity", r2: 0.856, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "single-word self-description of gender", r2: 0.560, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly states never questioning their gender identity", r2: 0.817, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly states being born a specific gender and continuing to identify with that same gender", r2: 0.701, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions how gender identity influences decisions, safety, or interactions in life", r2: 0.718, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "self-describes as male or man and mentions alignment with gender assigned at birth", r2: 0.905, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "uses the phrase 'I would describe my gender identity as ...'", r2: 0.774, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions enjoyment or participation in activities or items stereotypically associated with femininity", r2: 0.568, demo: [1,1,1,1,1,1,1], examples: [
+        "I don't consider myself super feminine but I definitely enjoy and partake in things one would deem feminine — like heels, makeup, and fashion.",
+        "I am non-binary and trans masculine. I express my gender in a more feminine way but I'm incredibly androgynous.",
+        "Even though I'm a man, I love cooking, fashion, and things culturally coded as feminine. It's just who I am."
+      ]},
+      { name: "mentions traditionally masculine activities or traits such as sports, fixing things, outdoor activities, or being a provider/protector", r2: 0.505, demo: [1,1,1,1,1,1,1], examples: [
+        "I am a man. I do things that are manly. I usually fix things that are broken.",
+        "I am a male. Most of my hobbies are typical male things like hunting and fishing.",
+        "Growing up I was always into sports, camping, and being outdoors. That's how I was raised to be a man."
+      ]},
+      { name: "uses the word 'cisgender'", r2: 0.980, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly states being heterosexual", r2: 0.901, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions being non-binary or nonbinary", r2: 0.810, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions fluidity or fluctuation in gender identity", r2: 0.780, demo: [1,1,1,1,1,1,1], examples: [
+        "I call myself genderfluid. Most days I feel I have no gender, but other days I feel like a woman and others a man.",
+        "My gender is a fluid wave that crashes between multiple gender aspects inside. My gender is always changing and adapting to my needs.",
+        "Some days I wake up feeling entirely masculine, others entirely feminine. I've stopped trying to pin it down."
+      ]},
+      { name: "uses the phrase 'I am a female'", r2: 0.808, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions experiences of questioning or struggling with their gender identity", r2: 0.755, demo: [1,1,1,1,1,1,1], examples: [
+        "I was born a male, but I've been transitioning to female over the last year. I've always known, but I never had the funds to do so until recently.",
+        "I identify as genderfluid and it took me a long time to realize this part of myself.",
+        "It wasn't until my late teens that I realized the discomfort I felt wasn't just anxiety — it was about my gender."
+      ]},
+      { name: "mentions experiences or milestones related to navigating societal expectations or breaking barriers tied to gender identity", r2: 0.648, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions roles or responsibilities within a family or household", r2: 0.558, demo: [1,1,1,1,1,1,1], examples: [
+        "Someone who takes charge in the household and provides for their family — has a father figure.",
+        "As a man it's my duty to make sure I provide for my family and protect my loved ones.",
+        "My identity as a woman is deeply tied to being a mother and keeping the family together."
+      ]},
+      { name: "self-describes as a woman or female without elaborating on gender identity beyond that", r2: 0.759, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions being male or a man in a direct and explicit manner", r2: 0.856, demo: [1,1,1,1,1,1,1], examples: [
+        "I am an Intersex Male. A man.",
+        "I am a man that was born a man.",
+        "Male. That is all."
+      ]},
+      { name: "explicitly rejects or feels disconnected from the concept of gender as a meaningful personal identity", r2: 0.705, demo: [1,1,1,1,1,1,1], examples: [
+        "I don't have one. I feel disconnected from (and generally apathetic about) the entire concept of gender.",
+        "\"Agender\" is what I normally go with. I also describe it as gender null or gender apathetic. I simply just don't have any personal sense of a gender.",
+        "Gender has never been a meaningful category for me. I exist outside of it."
+      ]},
+      { name: "explicitly states not caring about gender or not thinking much about it", r2: 0.910, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly identifies as male or a variant of male", r2: 0.769, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "discusses how gender impacts societal roles, opportunities, or treatment", r2: 0.849, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly states 'I am a woman'", r2: 0.929, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions being born female and identifying as female", r2: 0.795, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly self-describes as non-binary or uses the term 'non-binary' to describe their gender identity", r2: 0.980, demo: [1,1,1,1,1,1,1], examples: [] },
     ],
     so: [
-      {
-        name: "mentions questioning sexual orientation",
-        r2: 0.17,
-        demo: [0.45, 0.10, 0.22, 0.08, 0.05, 0.04, 0.04, 0.02],
-        examples: [
-          "This is kind of a tricky one for me. While I am mostly what others would label Heterosexual, I must admit that I find myself rather Bi-Curious at times.",
-          "I am heterosexual but do have curiosities. I don't know if there is enough to toss me into another category.",
-          "I've been questioning for a few years now. I know I'm not fully straight, but I haven't landed on a label yet."
-        ]
-      },
-      {
-        name: "distinguishes between romantic & sexual orientation",
-        r2: 0.17,
-        demo: [0.20, 0.12, 0.28, 0.12, 0.15, 0.08, 0.04, 0.01],
-        examples: [
-          "I would say I'm bisexual. Specifically, I'm sexually attracted to men and women but only romantically attracted to men.",
-          "I'm unsure of my sexual orientation because I have had attraction to both men and women. I've never had romantic feelings for anyone so that also adds to the confusion.",
-          "I am heterosexual but have had other sexual partners in the past (non-romantic) that were of the same gender."
-        ]
-      },
-      {
-        name: "mentions attraction to multiple genders",
-        r2: 0.48,
-        demo: [0.05, 0.05, 0.60, 0.18, 0.03, 0.04, 0.04, 0.01],
-        examples: [
-          "As a bisexual person, I am attracted to individuals of more than one gender, finding beauty and connection in diverse expressions of identity.",
-          "I'm bisexual — as in, 'genders like mine and genders not like mine.' Bisexuality isn't binary or dualistic.",
-          "I don't limit my attraction to any one gender. If I connect with a person, I connect with them."
-        ]
-      },
-      {
-        name: "mentions attraction not based on gender or sex",
-        r2: 0.51,
-        demo: [0.05, 0.05, 0.55, 0.20, 0.05, 0.04, 0.05, 0.01],
-        examples: [
-          "I am not attracted to people based on their gender or sex. I find people attractive for who they are as people.",
-          "I am pansexual, which means I don't base my attraction on someone's gender/sex. My attraction is based on a person's heart.",
-          "Gender isn't a factor in who I'm drawn to. It's all about the person themselves."
-        ]
-      },
-      {
-        name: "mentions age of realization or coming out",
-        r2: 0.06,
-        demo: [0.20, 0.35, 0.22, 0.12, 0.04, 0.03, 0.03, 0.01],
-        examples: [
-          "I am gay. I found out when I was very young — in middle school.",
-          "I'm a lesbian both romantically and sexually. I learned this about myself around puberty, which happened young for me at 9 years old.",
-          "I didn't come out until I was 40. For most of my life I thought I was straight because that's all I knew."
-        ]
-      },
-      {
-        name: "mentions never questioning sexual orientation",
-        r2: 0.07,
-        demo: [0.75, 0.08, 0.06, 0.04, 0.03, 0.01, 0.02, 0.01],
-        examples: [
-          "I HAVE ALWAYS BEEN A STRAIGHT MALE. HAVE NEVER QUESTIONED MY ORIENTATION.",
-          "I am heterosexual and have always been my whole life. I have only seen women as romantic interests.",
-          "Straight. Never questioned it, never needed to. It's just always been clear to me."
-        ]
-      },
-      {
-        name: "mentions reluctance to form intimate connections",
-        r2: 0.28,
-        demo: [0.25, 0.15, 0.20, 0.10, 0.20, 0.06, 0.03, 0.01],
-        examples: [
-          "I have rarely been the dating type, but I did eventually end up with my lovely current long-term partner. I really do struggle socially in some ways.",
-          "I have a much larger preference for males than I do for any women. I do like effeminate qualities, but I personally can't connect with women intimately.",
-          "Forming romantic connections has always been hard for me. I'm not sure if it's demisexuality or just anxiety."
-        ]
-      }
+      { name: "refuses to provide a clear or specific answer about sexual orientation", r2: 0.636, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly states attraction to 'men' without additional context or qualifiers", r2: 0.913, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions demisexuality or being demisexual", r2: 0.889, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions being married", r2: 0.913, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly self-describes as asexual or aromantic", r2: 0.990, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly self-describes as straight or heterosexual without additional context or elaboration", r2: 0.802, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly self-describes as straight using the exact word 'straight'", r2: 0.990, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "discusses how sexual orientation influences personal growth, relationships, or key life milestones", r2: 0.683, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "uses the term 'queer' to describe their sexual orientation", r2: 0.713, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly states never questioning their sexual orientation", r2: 0.850, demo: [1,1,1,1,1,1,1,1], examples: [
+        "I HAVE ALWAYS BEEN A STRAIGHT MALE. HAVE NEVER QUESTIONED MY ORIENTATION.",
+        "I am heterosexual and have always been my whole life. I have only seen women as romantic interests.",
+        "Straight. Never questioned it, never needed to. It's just always been clear to me."
+      ]},
+      { name: "mentions uncertainty or questioning about their sexual orientation", r2: 0.836, demo: [1,1,1,1,1,1,1,1], examples: [
+        "This is kind of a tricky one for me. While I am mostly what others would label Heterosexual, I must admit that I find myself rather Bi-Curious at times.",
+        "I am heterosexual but do have curiosities. I don't know if there is enough to toss me into another category.",
+        "I've been questioning for a few years now. I know I'm not fully straight, but I haven't landed on a label yet."
+      ]},
+      { name: "mentions that their sexual orientation does not significantly impact their life", r2: 0.909, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions 'opposite sex' or 'opposite gender'", r2: 0.784, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions attraction to more than two genders or a spectrum of genders", r2: 0.817, demo: [1,1,1,1,1,1,1,1], examples: [
+        "As a bisexual person, I am attracted to individuals of more than one gender, finding beauty and connection in diverse expressions of identity.",
+        "I'm bisexual — as in, 'genders like mine and genders not like mine.' Bisexuality isn't binary or dualistic.",
+        "I don't limit my attraction to any one gender. If I connect with a person, I connect with them."
+      ]},
+      { name: "mentions attraction specifically to the opposite sex", r2: 0.550, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions difficulty or hesitation in forming romantic or sexual connections", r2: 0.650, demo: [1,1,1,1,1,1,1,1], examples: [
+        "I have rarely been the dating type, but I did eventually end up with my lovely current long-term partner. I really do struggle socially in some ways.",
+        "I have a much larger preference for males than I do for any women. I do like effeminate qualities, but I personally can't connect with women intimately.",
+        "Forming romantic connections has always been hard for me. I'm not sure if it's demisexuality or just anxiety."
+      ]},
+      { name: "self-describes as gay", r2: 0.840, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions romantic orientation as distinct from sexual orientation", r2: 0.715, demo: [1,1,1,1,1,1,1,1], examples: [
+        "I would say I'm bisexual. Specifically, I'm sexually attracted to men and women but only romantically attracted to men.",
+        "I'm unsure of my sexual orientation because I have had attraction to both men and women. I've never had romantic feelings for anyone so that also adds to the confusion.",
+        "I am heterosexual but have had other sexual partners in the past (non-romantic) that were of the same gender."
+      ]},
+      { name: "uses the phrase 'I would describe'", r2: 0.810, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions the word 'straight'", r2: 0.500, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions age or life stage when they realized or came out", r2: 0.803, demo: [1,1,1,1,1,1,1,1], examples: [
+        "I am gay. I found out when I was very young — in middle school.",
+        "I'm a lesbian both romantically and sexually. I learned this about myself around puberty, which happened young for me at 9 years old.",
+        "I didn't come out until I was 40. For most of my life I thought I was straight because that's all I knew."
+      ]},
+      { name: "discusses how their sexual orientation influences their personal relationships or life milestones", r2: 0.514, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions attraction to transgender or non-binary individuals", r2: 0.869, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "self-describes as lesbian", r2: 0.905, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions pansexuality or pansexual as a descriptor", r2: 1.000, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "self-describes as bisexual", r2: 0.893, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions attraction not based on gender or sex", r2: 0.810, demo: [1,1,1,1,1,1,1,1], examples: [
+        "I am not attracted to people based on their gender or sex. I find people attractive for who they are as people.",
+        "I am pansexual, which means I don't base my attraction on someone's gender/sex. My attraction is based on a person's heart.",
+        "Gender isn't a factor in who I'm drawn to. It's all about the person themselves."
+      ]},
+      { name: "mentions discomfort or rejection of labels for their sexual orientation", r2: 0.734, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly uses the term 'heterosexual'", r2: 0.960, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "uses a single word or very brief phrase to describe sexual orientation without elaboration", r2: 0.727, demo: [1,1,1,1,1,1,1,1], examples: [] },
     ]
   };
 
@@ -1204,6 +1338,8 @@
 
   /* ===== SORT ===== */
   const currentSort = { race: 'r2-asc', gender: 'r2-asc', so: 'r2-asc' };
+
+  const THEME_INITIAL = 6;
 
   function sortThemes(axis, mode) {
     currentSort[axis] = mode;
@@ -1217,7 +1353,24 @@
     if (mode === 'r2-desc') sorted.sort((a, b) => b.r2 - a.r2);
     else if (mode === 'r2-asc') sorted.sort((a, b) => a.r2 - b.r2);
     else sorted.sort((a, b) => a.name.localeCompare(b.name));
-    sorted.forEach((theme, i) => container.appendChild(buildThemeItem(axis, theme, i)));
+
+    sorted.forEach((theme, i) => {
+      const el = buildThemeItem(axis, theme, i);
+      if (i >= THEME_INITIAL) el.style.display = 'none';
+      container.appendChild(el);
+    });
+
+    if (sorted.length > THEME_INITIAL) {
+      const remaining = sorted.length - THEME_INITIAL;
+      const btn = document.createElement('button');
+      btn.className = 'expand-themes-btn';
+      btn.textContent = `Show ${remaining} more themes`;
+      btn.onclick = () => {
+        container.querySelectorAll('.theme-item').forEach(el => el.style.display = '');
+        btn.remove();
+      };
+      container.appendChild(btn);
+    }
   }
 
   function buildThemeItem(axis, theme, i) {
@@ -1291,7 +1444,7 @@
       t.classList.toggle('active', t.dataset.axis === axis)
     );
     ['race', 'gender', 'so'].forEach(a => {
-      document.getElementById(`samples-${a}`).style.display = a === axis ? '' : 'none';
+      document.getElementById(`wrap-${a}`).style.display = a === axis ? '' : 'none';
     });
     document.getElementById('submit-prompt').textContent = submitPrompts[axis];
     clearSubmitStatus();
@@ -1348,6 +1501,35 @@
       </svg> Submit`;
     }
   }
+
+  /* ===== LEFT NAV SCROLLSPY ===== */
+  (function() {
+    const navSections = ['intro', 'pipeline', 'themes', 'submit', 'authors', 'citation'];
+    const sections = navSections.map(id => document.getElementById(id)).filter(Boolean);
+
+    function updateActiveNav() {
+      const trigger = window.scrollY + window.innerHeight * 0.35;
+      let activeId = sections[0]?.id;
+      for (const s of sections) {
+        if (s.offsetTop <= trigger) activeId = s.id;
+      }
+      document.querySelectorAll('.side-nav-item').forEach(item =>
+        item.classList.toggle('active', item.dataset.section === activeId)
+      );
+    }
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    updateActiveNav();
+
+    // Hide gradient when scrolled to end of sample containers
+    document.querySelectorAll('.sample-responses').forEach(el => {
+      el.addEventListener('scroll', () => {
+        const wrap = el.closest('.sample-scroll-wrap');
+        if (!wrap) return;
+        const atEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - 4;
+        wrap.classList.toggle('scrolled-to-end', atEnd);
+      });
+    });
+  })();
 
   /* ===== INIT ===== */
   buildThemes();
