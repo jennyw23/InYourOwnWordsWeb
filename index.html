@@ -486,18 +486,31 @@
 
     /* ========= SORT CONTROLS ========= */
     .sort-bar {
-      display: flex; align-items: center; gap: 8px;
+      display: flex; align-items: center; gap: 10px;
       margin: 16px 0 12px;
       font-size: 13px; color: var(--muted);
+      flex-wrap: wrap;
+    }
+    .sort-btn-group {
+      display: flex;
+      border-radius: 7px;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
     }
     .sort-btn {
-      padding: 4px 12px; border-radius: 6px;
-      border: 1.5px solid var(--border); background: var(--white);
-      font-size: 12px; font-weight: 600; color: var(--muted);
-      cursor: pointer; transition: all 0.15s;
+      padding: 5px 14px;
+      border: none;
+      border-right: 1px solid var(--border);
+      background: var(--white);
+      font-size: 12px; font-weight: 500; color: var(--muted);
+      cursor: pointer; transition: background 0.15s, color 0.15s;
     }
-    .sort-btn.active { border-color: var(--navy); background: var(--navy); color: #fff; }
-    .sort-btn:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
+    .sort-btn:last-child { border-right: none; }
+    .sort-btn.active { background: var(--navy); color: #fff; }
+    .sort-btn:hover:not(.active) { background: rgba(74,111,165,0.07); color: var(--navy); }
+    .sort-note {
+      font-size: 11.5px; color: var(--muted); font-style: italic;
+    }
 
     /* ========= SUBMIT SECTION ========= */
     .sample-scroll-wrap {
@@ -666,6 +679,9 @@
       body { padding-bottom: 60px; }
     }
   </style>
+  <!-- Optional pre-generated data file. Works with file:// and http://.
+       Generate with: window.DEMOGRAPHICS = JSON from race/gender/so_props.to_dict() -->
+  <script src="data/demographics.js"></script>
 </head>
 <body>
 
@@ -681,19 +697,15 @@
   </a>
   <a class="side-nav-item" data-section="themes" href="#themes">
     <span class="side-nav-dot"></span>
-    <span class="side-nav-label">Explorer</span>
+    <span class="side-nav-label">Explore Themes</span>
   </a>
   <a class="side-nav-item" data-section="submit" href="#submit">
     <span class="side-nav-dot"></span>
-    <span class="side-nav-label">Contribute</span>
+    <span class="side-nav-label">Share Yours</span>
   </a>
-  <a class="side-nav-item" data-section="authors" href="#authors">
+  <a class="side-nav-item" data-section="cite" href="#cite">
     <span class="side-nav-dot"></span>
-    <span class="side-nav-label">Authors</span>
-  </a>
-  <a class="side-nav-item" data-section="citation" href="#citation">
-    <span class="side-nav-dot"></span>
-    <span class="side-nav-label">Citation</span>
+    <span class="side-nav-label">Cite</span>
   </a>
 </nav>
 
@@ -703,7 +715,7 @@
     <!-- <div class="hero-tag">NLP &middot; Computational Social Science</div> -->
     <h1>In Your Own Words</h1>
     <p class="hero-subtitle">
-      We provide a <strong style="color:var(--text);">public dataset</strong> and computational framework for automatically discovering interpretable themes from free-text survey data. Applied to 1,004 U.S. participants' descriptions of race, gender, and sexual orientation, our method surfaces themes — like identity fluidity, belonging, and cultural pride — that standard survey categories miss. These themes reveal heterogeneity within demographic groups and illuminate how self-identified identities diverge from perceived ones.
+      We provide a <strong style="color:var(--text);">public dataset</strong> and computational framework for automatically discovering interpretable themes from free-text survey data. Applied to 1,004 U.S. participants' descriptions of race, gender, and sexual orientation, our framework helps surfaces themes — like identity fluidity, belonging, and cultural pride — that standard survey categories miss. These themes reveal heterogeneity within demographic groups and illuminate how self-identified identities diverge from perceived ones.
     </p>
     <div class="hero-links">
       <a href="#" class="btn btn-primary">
@@ -711,7 +723,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         Paper
       </a>
-      <a href="#" class="btn btn-outline">
+      <a href="https://github.com/jennyw23/InYourOwnWords" target="_blank" class="btn btn-outline">
         <!-- github icon -->
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
         Code
@@ -720,6 +732,10 @@
         <!-- database icon -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
         Request Data
+      </a>
+      <a href="#submit" class="btn btn-outline" onclick="event.preventDefault();document.getElementById('submit').scrollIntoView({behavior:'smooth'});">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        Share Yours
       </a>
     </div>
   </div>
@@ -785,9 +801,9 @@
         <div class="pipeline-step-title">Train Sparse Autoencoder (SAE)</div>
         <p class="pipeline-step-desc">
           A Sparse Autoencoder (SAE) is trained separately on each identity's embeddings.
-          The SAE learns a sparse, overcomplete dictionary of M=32 features, where at most
+          The SAE learns a sparse dictionary of M=32 features, where at most
           K=4 features are active for any given response. This sparsity constraint encourages
-          each feature to capture a distinct, interpretable aspect of identity description.
+          each feature to capture a distinct, interpretable aspect of identity description. For more specific details, we recommend reading <a href="https://hypothesaes.org/" target="_blank">Movva and Peng et al. 2025</a> (code is available at <a href="https://hypothesaes.org/" target="_blank">hypothesaes.org/</a>).
         </p>
       </div>
     </div>
@@ -806,7 +822,7 @@
           The top-activating responses for each SAE feature are passed to
           <span class="code-chip">GPT-4o</span>, which generates a natural-language
           description of what the feature represents. Features with poor fidelity
-          (annotation F1 &lt; 0.50) are excluded.
+          (F1 score &lt; 0.50) are excluded.
         </p>
       </div>
     </div>
@@ -850,9 +866,10 @@
       <div class="section-label">Interactive Explorer</div>
       <div class="section-title">Themes Discovered Across Identity Dimensions</div>
       <p class="section-desc">
-        The SAE discovers interpretable themes for each identity axis. Each chart shows how
-        themes vary in prevalence across demographic groups — revealing patterns that go
-        beyond what standard closed-category survey questions capture.
+        The SAE discovers interpretable themes for each identity axis. Each bar shows the
+        proportion of respondents in each demographic group whose free-text description
+        activates a given theme — revealing patterns that go beyond what standard
+        closed-category survey questions capture.
       </p>
     </div>
 
@@ -864,54 +881,42 @@
 
     <!-- RACE PANEL -->
     <div class="theme-panel active" id="panel-race">
-      <div class="theme-figure">
-        <img src="figures/custom_race_themes_barchart_legend_True.png" alt="Race Themes By Category" />
-        <div class="theme-figure-caption">
-          Each bar shows the proportion of respondents in each racial/ethnic category whose free-text description
-          activates the theme. 
-        </div>
-      </div>
       <div class="sort-bar">
         Sort by:
-        <button class="sort-btn active" onclick="sortThemes('race','r2-asc')" id="sort-race-r2-asc">R² low→high</button>
-        <button class="sort-btn" onclick="sortThemes('race','r2-desc')" id="sort-race-r2-desc">R² high→low</button>
-        <button class="sort-btn" onclick="sortThemes('race','name')" id="sort-race-name">Name</button>
+        <div class="sort-btn-group">
+          <button class="sort-btn active" onclick="sortThemes('race','max-asc')" id="sort-race-max-asc">Broadly shared</button>
+          <button class="sort-btn" onclick="sortThemes('race','max-desc')" id="sort-race-max-desc">Group-specific</button>
+          <button class="sort-btn" onclick="sortThemes('race','name')" id="sort-race-name">A → Z</button>
+        </div>
+        <span class="sort-note">Themes at the top are expressed across groups; themes at the bottom are concentrated in specific groups.</span>
       </div>
       <div class="theme-list" id="themes-race"></div>
     </div>
 
     <!-- GENDER PANEL -->
     <div class="theme-panel" id="panel-gender">
-      <div class="theme-figure">
-        <img src="figures/custom_gender_themes_barchart_legend_True.png" alt="Gender Themes By Category" />
-        <div class="theme-figure-caption">
-          Each bar shows the proportion of respondents in each gender category whose free-text description
-          activates the theme. 
-        </div>
-      </div>
       <div class="sort-bar">
-        Sort by:
-        <button class="sort-btn active" onclick="sortThemes('gender','r2-asc')" id="sort-gender-r2-asc">R² low→high</button>
-        <button class="sort-btn" onclick="sortThemes('gender','r2-desc')" id="sort-gender-r2-desc">R² high→low</button>
-        <button class="sort-btn" onclick="sortThemes('gender','name')" id="sort-gender-name">Name</button>
+        Order:
+        <div class="sort-btn-group">
+          <button class="sort-btn active" onclick="sortThemes('gender','max-asc')" id="sort-gender-max-asc">Broadly shared</button>
+          <button class="sort-btn" onclick="sortThemes('gender','max-desc')" id="sort-gender-max-desc">Group-specific</button>
+          <button class="sort-btn" onclick="sortThemes('gender','name')" id="sort-gender-name">A → Z</button>
+        </div>
+        <span class="sort-note">Themes at the top are expressed across groups; themes at the bottom are concentrated in specific groups.</span>
       </div>
       <div class="theme-list" id="themes-gender"></div>
     </div>
 
     <!-- SO PANEL -->
     <div class="theme-panel" id="panel-so">
-      <div class="theme-figure">
-        <img src="figures/custom_sexual_orientation_themes_barchart_legend_True.png" alt="Sexual Orientation Themes By Category" />
-        <div class="theme-figure-caption">
-          Each bar shows the proportion of respondents in each sexual orientation category whose free-text
-          description activates the theme.
-        </div>
-      </div>
       <div class="sort-bar">
-        Sort by:
-        <button class="sort-btn active" onclick="sortThemes('so','r2-asc')" id="sort-so-r2-asc">R² low→high</button>
-        <button class="sort-btn" onclick="sortThemes('so','r2-desc')" id="sort-so-r2-desc">R² high→low</button>
-        <button class="sort-btn" onclick="sortThemes('so','name')" id="sort-so-name">Name</button>
+        Order:
+        <div class="sort-btn-group">
+          <button class="sort-btn active" onclick="sortThemes('so','max-asc')" id="sort-so-max-asc">Broadly shared</button>
+          <button class="sort-btn" onclick="sortThemes('so','max-desc')" id="sort-so-max-desc">Group-specific</button>
+          <button class="sort-btn" onclick="sortThemes('so','name')" id="sort-so-name">A → Z</button>
+        </div>
+        <span class="sort-note">Themes at the top are expressed across groups; themes at the bottom are concentrated in specific groups.</span>
       </div>
       <div class="theme-list" id="themes-so"></div>
     </div>
@@ -1010,60 +1015,50 @@
   </div>
 </section>
 
-<!-- ============ AUTHORS ============ -->
-<section id="authors" style="padding-top:56px; padding-bottom:56px;">
-  <div class="container">
-    <div class="section-label">Authors</div>
-    <div class="authors-grid">
-      <div class="author-card">
-        <div class="author-avatar">
-          <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=eRLE0YIAAAAJ&citpid=3" alt="Author photo"
-               onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#6B9FD4,#4A6FA5)'; this.parentElement.innerHTML='JW';" />
-        </div>
-        <div>
-          <div class="author-name"><a href="https://www.jennywang.me" target="_blank">Jenny S. Wang</a></div>
-          <div class="author-affil">Harvard Business School</div>
-        </div>
-      </div>
-      <div class="author-card">
-        <div class="author-avatar">
-          <img src="https://sociology.stanford.edu/sites/sociology/files/styles/hs_medium_square_720x720/public/media/people/aliya_saperstein_170420_0.jpg.webp?h=da6fae6e&itok=05SLKusF" alt="Author photo"
-               onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#9F87CC,#7C6AAF)'; this.parentElement.innerHTML='??';" />
-        </div>
-        <div>
-          <div class="author-name"><a href="https://sociology.stanford.edu/people/aliya-saperstein" target="_blank">Aliya Saperstein</a></div>
-          <div class="author-affil">Stanford University</div>
-        </div>
-      </div>
-      <div class="author-card">
-        <div class="author-avatar">
-          <img src="https://migrate.tech.cornell.edu/authors/profile_emma.jpg" alt="Author photo"
-               onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#D97A9B,#C45A80)'; this.parentElement.innerHTML='??';" />
-        </div>
-        <div>
-          <div class="author-name"><a href="https://people.eecs.berkeley.edu/~emmapierson/" target="_blank">Emma Pierson</a></div>
-          <div class="author-affil">University of California, Berkeley</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CITATION ============ -->
-<section id="citation">
+<!-- ============ CITE ============ -->
+<section id="cite">
   <div class="container">
     <div class="section-label">Citation</div>
     <div class="section-title">Cite This Work</div>
     <div class="citation-box">
       <button class="copy-btn" onclick="copyCitation()">Copy</button>
       <pre id="bibtex">@article{2026inyourownwords,
-  title     = {In Your Own Words: Computational Understanding of
-               Self-Described Identity},
-  author    = {  and AND <!-- Co-Authors -->},
+  title     = {In your own words: computationally identifying interpretable themes in free-text survey data},
+author={Wang, Jenny S and Saperstein, Aliya and Pierson, Emma}, 
+  journal={arXiv preprint},   
   year      = {2026},
-  journal   = {<!-- Venue -->},
   url       = {<!-- URL -->}
 }</pre>
+      <div style="border-top:1px solid rgba(255,255,255,0.12);margin-top:20px;padding-top:20px;
+                  display:flex;flex-wrap:wrap;gap:24px 40px;align-items:flex-start;">
+        <a href="https://www.hbs.edu/faculty/Pages/profile.aspx?facId=1543960" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;">
+          <img src="img/profile_jenny.jpg" alt="Jenny S. Wang"
+               style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.25);"
+               onerror="this.style.display='none';" />
+          <span style="text-align:center;">
+            <div style="font-size:13px;font-weight:600;color:#e2e8f0;">Jenny S. Wang</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.45);">Harvard Business School</div>
+          </span>
+        </a>
+        <a href="https://sociology.stanford.edu/people/aliya-saperstein" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;">
+          <img src="img/profile_aliya.webp" alt="Aliya Saperstein"
+               style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.25);"
+               onerror="this.style.display='none';" />
+          <span style="text-align:center;">
+            <div style="font-size:13px;font-weight:600;color:#e2e8f0;">Aliya Saperstein</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.45);">Stanford University</div>
+          </span>
+        </a>
+        <a href="https://people.eecs.berkeley.edu/~emmapierson/" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;">
+          <img src="img/profile_emma.jpg" alt="Emma Pierson"
+               style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.25);"
+               onerror="this.style.display='none';" />
+          <span style="text-align:center;">
+            <div style="font-size:13px;font-weight:600;color:#e2e8f0;">Emma Pierson</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.45);">University of California, Berkeley</div>
+          </span>
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -1125,7 +1120,7 @@
     gender: [
       { label: 'Cis Woman',   color: '#D97A9B' },
       { label: 'Cis Man',     color: '#6B9FD4' },
-      { label: 'Non-binary',  color: '#9F87CC' },
+      { label: 'Cis Other',  color: '#9F87CC' },
       { label: 'Trans Woman', color: '#C45A80' },
       { label: 'Trans Man',   color: '#4A6FA5' },
       { label: 'Trans Other', color: '#B8A8D8' },
@@ -1134,9 +1129,9 @@
     so: [
       { label: 'Straight',      color: '#6B9FD4' },
       { label: 'Gay/Lesbian',   color: '#7B5EA7' },
-      { label: 'Bisexual/Pan',  color: '#E07B54' },
+      { label: 'Bisexual/Pansexual',  color: '#E07B54' },
       { label: 'Queer',         color: '#D97A9B' },
-      { label: 'Asexual/Aro',   color: '#5E9E6B' },
+      { label: 'Asexual/Aromantic',   color: '#5E9E6B' },
       { label: 'Demisexual',    color: '#C4973A' },
       { label: 'Multiple',      color: '#C45A80' },
       { label: 'Other',         color: '#A0A0A8' },
@@ -1151,207 +1146,213 @@
   // examples = add up to 3 representative free-text responses from your dataset.
   const themeData = {
     race: [
-      { name: "mentions celebrating Christian holidays", r2: 0.780, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "uses the phrase 'I would describe my race' or a close variation", r2: 0.907, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions speaking English or American English as a primary language", r2: 0.900, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions being first, second, or third generation American or immigrant", r2: 0.752, demo: [1,1,1,1,1,1,1,1,1], examples: [
+      { name: "mentions celebrating Christian holidays", r2: 0.780, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      // { name: "uses the phrase 'I would describe my race' or a close variation", r2: 0.907, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions speaking English or American English as a primary language", r2: 0.900, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions being first, second, or third generation American or immigrant", r2: 0.752, demo: [0,0,0,0,0,0,0,0,0], examples: [
         "I am Filipino but I was born and raised in America. Both of my parents and all of my extended family are immigrants.",
         "I am a half Irish and half Italian third generation American. My great-grandparents were originally from Italy and Ireland.",
         "I am second-generation American. My parents came from Mexico, and I grew up navigating both cultures."
       ]},
-      { name: "mentions pride in Black or African American identity", r2: 0.880, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "uses the phrase 'I am' followed by a race or ethnicity descriptor without elaboration", r2: 0.752, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "self-describes as mixed or multiracial", r2: 0.787, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly self-describes as white without mentioning other ethnicities or cultural heritages", r2: 0.861, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions specific regions or countries of ancestral origin", r2: 0.686, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions European ancestry or descent explicitly", r2: 0.645, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions being Black or African American", r2: 0.980, demo: [1,1,1,1,1,1,1,1,1], examples: [
+      { name: "mentions pride in Black or African American identity", r2: 0.880, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      // { name: "uses the phrase 'I am' followed by a race or ethnicity descriptor without elaboration", r2: 0.752, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "self-describes as mixed or multiracial", r2: 0.787, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly self-describes as white without mentioning other ethnicities or cultural heritages", r2: 0.861, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions specific regions or countries of ancestral origin", r2: 0.686, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions European ancestry or descent explicitly", r2: 0.645, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions being Black or African American", r2: 0.980, demo: [0,0,0,0,0,0,0,0,0], examples: [
         "Black or African American.",
         "I am a Black African American. My root is from Western Africa.",
         "I am Black American. Being a Black American has heavily influenced my experiences in the world."
       ]},
-      { name: "mentions speaking or understanding multiple languages or specific non-English languages", r2: 0.707, demo: [1,1,1,1,1,1,1,1,1], examples: [
+      { name: "mentions speaking or understanding multiple languages or specific non-English languages", r2: 0.707, demo: [0,0,0,0,0,0,0,0,0], examples: [
         "I am Filipino American. I can speak Tagalog and other dialects — I find this very unique.",
         "I am a first born Filipino American. Most individuals born here and whose parents are Filipino immigrants don't speak the mother language.",
         "My family speaks both English and Spanish at home, which has been central to my cultural identity."
       ]},
-      { name: "mentions being Native American or belonging to a Native American tribe", r2: 0.969, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "self-describes as South Asian or mentions a South Asian country or ethnicity", r2: 0.750, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "uses single-word or very short descriptions of race/ethnicity (1-3 words)", r2: 0.689, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions feelings of not fully belonging or being out of place related to race/ethnicity", r2: 0.672, demo: [1,1,1,1,1,1,1,1,1], examples: [
+      { name: "mentions being Native American or belonging to a Native American tribe", r2: 0.969, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "self-describes as South Asian or mentions a South Asian country or ethnicity", r2: 0.750, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      // { name: "uses single-word or very short descriptions of race/ethnicity (1-3 words)", r2: 0.689, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions feelings of not fully belonging or being out of place related to race/ethnicity", r2: 0.672, demo: [0,0,0,0,0,0,0,0,0], examples: [
         "I was raised in a Caribbean country where we spoke French and Creole, but I feel like I don't fully belong anywhere.",
         "I've had the opportunity of growing up with privilege. There are many things in my life I haven't had to worry about because of my ethnicity.",
         "I feel like I'm caught between two worlds — not quite fitting into either the majority or my heritage group."
       ]},
-      { name: "mentions being Mexican-American or Mexican", r2: 0.990, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly states a lack of cultural or ethnic identity or traditions", r2: 0.970, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions European ancestry in detail, including specific countries or regions", r2: 0.679, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions parentage explicitly (e.g., 'my mom is X and my dad is Y')", r2: 0.864, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions the languages spoken by themselves or their family", r2: 0.775, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly uses the phrase 'identify as' or 'identify with' to describe their race or ethnicity", r2: 0.744, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "describes beliefs or values associated with their race", r2: 0.700, demo: [1,1,1,1,1,1,1,1,1], examples: [
+      { name: "mentions being Mexican-American or Mexican", r2: 0.990, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly states a lack of cultural or ethnic identity or traditions", r2: 0.970, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions European ancestry in detail, including specific countries or regions", r2: 0.679, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions parentage explicitly (e.g., 'my mom is X and my dad is Y')", r2: 0.864, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions the languages spoken by themselves or their family", r2: 0.775, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      // { name: "explicitly uses the phrase 'identify as' or 'identify with' to describe their race or ethnicity", r2: 0.744, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "describes beliefs or values associated with their race", r2: 0.700, demo: [0,0,0,0,0,0,0,0,0], examples: [
         "My race is a respectful and hardworking race. They do things together to achieve a common goal.",
         "My race believes that other races shouldn't be equal. My race has bigoted views, and I don't always feel proud being my race.",
         "We come from a culture that values community, family above all, and honoring our ancestors."
       ]},
-      { name: "mentions whiteness or being white", r2: 0.609, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions being Vietnamese or Vietnamese-American", r2: 0.507, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions being born in the United States or America", r2: 0.823, demo: [1,1,1,1,1,1,1,1,1], examples: [
+      { name: "mentions whiteness or being white", r2: 0.609, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions being Vietnamese or Vietnamese-American", r2: 0.507, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions being born in the United States or America", r2: 0.823, demo: [0,0,0,0,0,0,0,0,0], examples: [
         "I was born in China. So I am Chinese American.",
         "I'm a Venezuelan American — born in America to Venezuelan parents.",
         "Born and raised in the United States, but my roots go back to the Philippines."
       ]},
-      { name: "mentions speaking Spanish or Spanish as part of family or cultural identity", r2: 0.800, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions traditional or cultural food as an important aspect of their identity", r2: 0.621, demo: [1,1,1,1,1,1,1,1,1], examples: [
+      { name: "mentions speaking Spanish or Spanish as part of family or cultural identity", r2: 0.800, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions traditional or cultural food as an important aspect of their identity", r2: 0.621, demo: [0,0,0,0,0,0,0,0,0], examples: [
         "We love to eat delicious food that includes all of our unique spices, and we have a very rich history and culture.",
         "Family is a big part of our culture and to help each other out. There is a lot of pride in our food too.",
         "Food has always been a way for our family to connect to our heritage — traditional dishes at every gathering."
       ]},
-      { name: "mentions African heritage or African ancestry", r2: 0.723, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
-      { name: "self-describes as white American", r2: 0.762, demo: [1,1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions African heritage or African ancestry", r2: 0.723, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
+      { name: "self-describes as white American", r2: 0.762, demo: [0,0,0,0,0,0,0,0,0], examples: [] },
     ],
     gender: [
-      { name: "uses the exact word 'male'", r2: 0.909, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions childhood experiences related to gender roles or expectations", r2: 0.782, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions responsibility to provide for family", r2: 0.551, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions giving birth or having children as a significant aspect of their identity", r2: 0.856, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "single-word self-description of gender", r2: 0.560, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly states never questioning their gender identity", r2: 0.817, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly states being born a specific gender and continuing to identify with that same gender", r2: 0.701, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions how gender identity influences decisions, safety, or interactions in life", r2: 0.718, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "self-describes as male or man and mentions alignment with gender assigned at birth", r2: 0.905, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "uses the phrase 'I would describe my gender identity as ...'", r2: 0.774, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions enjoyment or participation in activities or items stereotypically associated with femininity", r2: 0.568, demo: [1,1,1,1,1,1,1], examples: [
+      { name: "uses the exact word 'male'", r2: 0.909, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions childhood experiences related to gender roles or expectations", r2: 0.782, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions responsibility to provide for family", r2: 0.551, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions giving birth or having children as a significant aspect of their identity", r2: 0.856, demo: [0,0,0,0,0,0,0], examples: [] },
+      // { name: "single-word self-description of gender", r2: 0.560, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly states never questioning their gender identity", r2: 0.817, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly states being born a specific gender and continuing to identify with that same gender", r2: 0.701, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions how gender identity influences decisions, safety, or interactions in life", r2: 0.718, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "self-describes as male or man and mentions alignment with gender assigned at birth", r2: 0.905, demo: [0,0,0,0,0,0,0], examples: [] },
+      // { name: "uses the phrase 'I would describe my gender identity as ...'", r2: 0.774, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions enjoyment or participation in activities or items stereotypically associated with femininity (e.g., makeup, fashion, dressing up, heels, etc.)", r2: 0.568, demo: [0,0,0,0,0,0,0], examples: [
         "I don't consider myself super feminine but I definitely enjoy and partake in things one would deem feminine — like heels, makeup, and fashion.",
         "I am non-binary and trans masculine. I express my gender in a more feminine way but I'm incredibly androgynous.",
         "Even though I'm a man, I love cooking, fashion, and things culturally coded as feminine. It's just who I am."
       ]},
-      { name: "mentions traditionally masculine activities or traits such as sports, fixing things, outdoor activities, or being a provider/protector", r2: 0.505, demo: [1,1,1,1,1,1,1], examples: [
+      { name: "mentions traditionally masculine activities or traits such as sports, fixing things, outdoor activities, or being a provider/protector", r2: 0.505, demo: [0,0,0,0,0,0,0], examples: [
         "I am a man. I do things that are manly. I usually fix things that are broken.",
         "I am a male. Most of my hobbies are typical male things like hunting and fishing.",
         "Growing up I was always into sports, camping, and being outdoors. That's how I was raised to be a man."
       ]},
-      { name: "uses the word 'cisgender'", r2: 0.980, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly states being heterosexual", r2: 0.901, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions being non-binary or nonbinary", r2: 0.810, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions fluidity or fluctuation in gender identity", r2: 0.780, demo: [1,1,1,1,1,1,1], examples: [
+      { name: "uses the word 'cisgender'", r2: 0.980, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly states being heterosexual", r2: 0.901, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions being non-binary or nonbinary", r2: 0.810, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions fluidity or fluctuation in gender identity", r2: 0.780, demo: [0,0,0,0,0,0,0], examples: [
         "I call myself genderfluid. Most days I feel I have no gender, but other days I feel like a woman and others a man.",
         "My gender is a fluid wave that crashes between multiple gender aspects inside. My gender is always changing and adapting to my needs.",
         "Some days I wake up feeling entirely masculine, others entirely feminine. I've stopped trying to pin it down."
       ]},
-      { name: "uses the phrase 'I am a female'", r2: 0.808, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions experiences of questioning or struggling with their gender identity", r2: 0.755, demo: [1,1,1,1,1,1,1], examples: [
+      { name: "uses the phrase 'I am a female'", r2: 0.808, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions experiences of questioning or struggling with their gender identity", r2: 0.755, demo: [0,0,0,0,0,0,0], examples: [
         "I was born a male, but I've been transitioning to female over the last year. I've always known, but I never had the funds to do so until recently.",
         "I identify as genderfluid and it took me a long time to realize this part of myself.",
         "It wasn't until my late teens that I realized the discomfort I felt wasn't just anxiety — it was about my gender."
       ]},
-      { name: "mentions experiences or milestones related to navigating societal expectations or breaking barriers tied to gender identity", r2: 0.648, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions roles or responsibilities within a family or household", r2: 0.558, demo: [1,1,1,1,1,1,1], examples: [
+      { name: "mentions experiences or milestones related to navigating societal expectations or breaking barriers tied to gender identity", r2: 0.648, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions roles or responsibilities within a family or household", r2: 0.558, demo: [0,0,0,0,0,0,0], examples: [
         "Someone who takes charge in the household and provides for their family — has a father figure.",
         "As a man it's my duty to make sure I provide for my family and protect my loved ones.",
         "My identity as a woman is deeply tied to being a mother and keeping the family together."
       ]},
-      { name: "self-describes as a woman or female without elaborating on gender identity beyond that", r2: 0.759, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions being male or a man in a direct and explicit manner", r2: 0.856, demo: [1,1,1,1,1,1,1], examples: [
+      { name: "self-describes as a woman or female without elaborating on gender identity beyond that", r2: 0.759, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions being male or a man in a direct and explicit manner", r2: 0.856, demo: [0,0,0,0,0,0,0], examples: [
         "I am an Intersex Male. A man.",
         "I am a man that was born a man.",
         "Male. That is all."
       ]},
-      { name: "explicitly rejects or feels disconnected from the concept of gender as a meaningful personal identity", r2: 0.705, demo: [1,1,1,1,1,1,1], examples: [
+      { name: "explicitly rejects or feels disconnected from the concept of gender as a meaningful personal identity", r2: 0.705, demo: [0,0,0,0,0,0,0], examples: [
         "I don't have one. I feel disconnected from (and generally apathetic about) the entire concept of gender.",
         "\"Agender\" is what I normally go with. I also describe it as gender null or gender apathetic. I simply just don't have any personal sense of a gender.",
         "Gender has never been a meaningful category for me. I exist outside of it."
       ]},
-      { name: "explicitly states not caring about gender or not thinking much about it", r2: 0.910, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly identifies as male or a variant of male", r2: 0.769, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "discusses how gender impacts societal roles, opportunities, or treatment", r2: 0.849, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly states 'I am a woman'", r2: 0.929, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions being born female and identifying as female", r2: 0.795, demo: [1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly self-describes as non-binary or uses the term 'non-binary' to describe their gender identity", r2: 0.980, demo: [1,1,1,1,1,1,1], examples: [] },
+      { name: "explicitly states not caring about gender or not thinking much about it", r2: 0.910, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly identifies as male or a variant of male", r2: 0.769, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "discusses how gender impacts societal roles, opportunities, or treatment", r2: 0.849, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly states 'I am a woman'", r2: 0.929, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions being born female and identifying as female", r2: 0.795, demo: [0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly self-describes as non-binary or uses the term 'non-binary' to describe their gender identity", r2: 0.980, demo: [0,0,0,0,0,0,0], examples: [] },
     ],
     so: [
-      { name: "refuses to provide a clear or specific answer about sexual orientation", r2: 0.636, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly states attraction to 'men' without additional context or qualifiers", r2: 0.913, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions demisexuality or being demisexual", r2: 0.889, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions being married", r2: 0.913, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly self-describes as asexual or aromantic", r2: 0.990, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly self-describes as straight or heterosexual without additional context or elaboration", r2: 0.802, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly self-describes as straight using the exact word 'straight'", r2: 0.990, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "discusses how sexual orientation influences personal growth, relationships, or key life milestones", r2: 0.683, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "uses the term 'queer' to describe their sexual orientation", r2: 0.713, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly states never questioning their sexual orientation", r2: 0.850, demo: [1,1,1,1,1,1,1,1], examples: [
+      { name: "refuses to provide a clear or specific answer about sexual orientation", r2: 0.636, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly states attraction to 'men' without additional context or qualifiers", r2: 0.913, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions demisexuality or being demisexual", r2: 0.889, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions being married", r2: 0.913, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly self-describes as asexual or aromantic", r2: 0.990, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly self-describes as straight or heterosexual without additional context or elaboration", r2: 0.802, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly self-describes as straight using the exact word 'straight'", r2: 0.990, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "discusses how sexual orientation influences personal growth, relationships, or key life milestones", r2: 0.683, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "uses the term 'queer' to describe their sexual orientation", r2: 0.713, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly states never questioning their sexual orientation", r2: 0.850, demo: [0,0,0,0,0,0,0,0], examples: [
         "I HAVE ALWAYS BEEN A STRAIGHT MALE. HAVE NEVER QUESTIONED MY ORIENTATION.",
         "I am heterosexual and have always been my whole life. I have only seen women as romantic interests.",
         "Straight. Never questioned it, never needed to. It's just always been clear to me."
       ]},
-      { name: "mentions uncertainty or questioning about their sexual orientation", r2: 0.836, demo: [1,1,1,1,1,1,1,1], examples: [
+      { name: "mentions uncertainty or questioning about their sexual orientation", r2: 0.836, demo: [0,0,0,0,0,0,0,0], examples: [
         "This is kind of a tricky one for me. While I am mostly what others would label Heterosexual, I must admit that I find myself rather Bi-Curious at times.",
         "I am heterosexual but do have curiosities. I don't know if there is enough to toss me into another category.",
         "I've been questioning for a few years now. I know I'm not fully straight, but I haven't landed on a label yet."
       ]},
-      { name: "mentions that their sexual orientation does not significantly impact their life", r2: 0.909, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions 'opposite sex' or 'opposite gender'", r2: 0.784, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions attraction to more than two genders or a spectrum of genders", r2: 0.817, demo: [1,1,1,1,1,1,1,1], examples: [
+      { name: "mentions that their sexual orientation does not significantly impact their life", r2: 0.909, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions 'opposite sex' or 'opposite gender'", r2: 0.784, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions attraction to more than two genders or a spectrum of genders", r2: 0.817, demo: [0,0,0,0,0,0,0,0], examples: [
         "As a bisexual person, I am attracted to individuals of more than one gender, finding beauty and connection in diverse expressions of identity.",
         "I'm bisexual — as in, 'genders like mine and genders not like mine.' Bisexuality isn't binary or dualistic.",
         "I don't limit my attraction to any one gender. If I connect with a person, I connect with them."
       ]},
-      { name: "mentions attraction specifically to the opposite sex", r2: 0.550, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions difficulty or hesitation in forming romantic or sexual connections", r2: 0.650, demo: [1,1,1,1,1,1,1,1], examples: [
+      { name: "mentions attraction specifically to the opposite sex", r2: 0.550, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions difficulty or hesitation in forming romantic or sexual connections", r2: 0.650, demo: [0,0,0,0,0,0,0,0], examples: [
         "I have rarely been the dating type, but I did eventually end up with my lovely current long-term partner. I really do struggle socially in some ways.",
         "I have a much larger preference for males than I do for any women. I do like effeminate qualities, but I personally can't connect with women intimately.",
         "Forming romantic connections has always been hard for me. I'm not sure if it's demisexuality or just anxiety."
       ]},
-      { name: "self-describes as gay", r2: 0.840, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions romantic orientation as distinct from sexual orientation", r2: 0.715, demo: [1,1,1,1,1,1,1,1], examples: [
+      { name: "self-describes as gay", r2: 0.840, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions romantic orientation as distinct from sexual orientation", r2: 0.715, demo: [0,0,0,0,0,0,0,0], examples: [
         "I would say I'm bisexual. Specifically, I'm sexually attracted to men and women but only romantically attracted to men.",
         "I'm unsure of my sexual orientation because I have had attraction to both men and women. I've never had romantic feelings for anyone so that also adds to the confusion.",
         "I am heterosexual but have had other sexual partners in the past (non-romantic) that were of the same gender."
       ]},
-      { name: "uses the phrase 'I would describe'", r2: 0.810, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions the word 'straight'", r2: 0.500, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions age or life stage when they realized or came out", r2: 0.803, demo: [1,1,1,1,1,1,1,1], examples: [
+      // { name: "uses the phrase 'I would describe'", r2: 0.810, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions the word 'straight'", r2: 0.500, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions age or life stage when they realized or came out", r2: 0.803, demo: [0,0,0,0,0,0,0,0], examples: [
         "I am gay. I found out when I was very young — in middle school.",
         "I'm a lesbian both romantically and sexually. I learned this about myself around puberty, which happened young for me at 9 years old.",
         "I didn't come out until I was 40. For most of my life I thought I was straight because that's all I knew."
       ]},
-      { name: "discusses how their sexual orientation influences their personal relationships or life milestones", r2: 0.514, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions attraction to transgender or non-binary individuals", r2: 0.869, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "self-describes as lesbian", r2: 0.905, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions pansexuality or pansexual as a descriptor", r2: 1.000, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "self-describes as bisexual", r2: 0.893, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "mentions attraction not based on gender or sex", r2: 0.810, demo: [1,1,1,1,1,1,1,1], examples: [
+      { name: "discusses how their sexual orientation influences their personal relationships or life milestones", r2: 0.514, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions attraction to transgender or non-binary individuals", r2: 0.869, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "self-describes as lesbian", r2: 0.905, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions pansexuality or pansexual as a descriptor", r2: 1.000, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "self-describes as bisexual", r2: 0.893, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "mentions attraction not based on gender or sex", r2: 0.810, demo: [0,0,0,0,0,0,0,0], examples: [
         "I am not attracted to people based on their gender or sex. I find people attractive for who they are as people.",
         "I am pansexual, which means I don't base my attraction on someone's gender/sex. My attraction is based on a person's heart.",
         "Gender isn't a factor in who I'm drawn to. It's all about the person themselves."
       ]},
-      { name: "mentions discomfort or rejection of labels for their sexual orientation", r2: 0.734, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "explicitly uses the term 'heterosexual'", r2: 0.960, demo: [1,1,1,1,1,1,1,1], examples: [] },
-      { name: "uses a single word or very brief phrase to describe sexual orientation without elaboration", r2: 0.727, demo: [1,1,1,1,1,1,1,1], examples: [] },
+      { name: "mentions discomfort or rejection of labels for their sexual orientation", r2: 0.734, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      { name: "explicitly uses the term 'heterosexual'", r2: 0.960, demo: [0,0,0,0,0,0,0,0], examples: [] },
+      // { name: "uses a single word or very brief phrase to describe sexual orientation without elaboration", r2: 0.727, demo: [0,0,0,0,0,0,0,0], examples: [] },
     ]
   };
 
   /* ===== BUILD THEME LISTS ===== */
   function buildThemes() {
-    ['race', 'gender', 'so'].forEach(axis => sortThemes(axis, 'r2-asc'));
+    ['race', 'gender', 'so'].forEach(axis => sortThemes(axis, 'max-asc'));
   }
 
   /* ===== SORT ===== */
-  const currentSort = { race: 'r2-asc', gender: 'r2-asc', so: 'r2-asc' };
+  const currentSort = { race: 'max-asc', gender: 'max-asc', so: 'max-asc' };
 
   const THEME_INITIAL = 6;
 
+  function themeMaxProp(theme) {
+    const total = theme.demo.reduce((s, v) => s + v, 0);
+    if (!total) return 0;
+    return Math.max(...theme.demo) / total;
+  }
+
   function sortThemes(axis, mode) {
     currentSort[axis] = mode;
-    ['r2-desc', 'r2-asc', 'name'].forEach(m => {
+    ['max-asc', 'max-desc', 'name'].forEach(m => {
       const btn = document.getElementById(`sort-${axis}-${m}`);
       if (btn) btn.classList.toggle('active', m === mode);
     });
     const container = document.getElementById(`themes-${axis}`);
     container.innerHTML = '';
     const sorted = [...themeData[axis]];
-    if (mode === 'r2-desc') sorted.sort((a, b) => b.r2 - a.r2);
-    else if (mode === 'r2-asc') sorted.sort((a, b) => a.r2 - b.r2);
+    if (mode === 'max-desc') sorted.sort((a, b) => themeMaxProp(b) - themeMaxProp(a));
+    else if (mode === 'max-asc') sorted.sort((a, b) => themeMaxProp(a) - themeMaxProp(b));
     else sorted.sort((a, b) => a.name.localeCompare(b.name));
 
     sorted.forEach((theme, i) => {
@@ -1364,34 +1365,45 @@
       const remaining = sorted.length - THEME_INITIAL;
       const btn = document.createElement('button');
       btn.className = 'expand-themes-btn';
-      btn.textContent = `Show ${remaining} more themes`;
-      btn.onclick = () => {
-        container.querySelectorAll('.theme-item').forEach(el => el.style.display = '');
-        btn.remove();
-      };
+      let expanded = false;
+      function syncExpand() {
+        container.querySelectorAll('.theme-item').forEach((el, i) => {
+          el.style.display = (expanded || i < THEME_INITIAL) ? '' : 'none';
+        });
+        btn.textContent = expanded
+          ? `↑ Collapse to ${THEME_INITIAL} themes`
+          : `↓ Show ${remaining} more themes`;
+      }
+      btn.onclick = () => { expanded = !expanded; syncExpand(); };
+      syncExpand();
       container.appendChild(btn);
     }
   }
 
   function buildThemeItem(axis, theme, i) {
     const cats = demoCats[axis];
-    // Normalize demo to sum to 1
     const total = theme.demo.reduce((s, v) => s + v, 0);
-    const segs = cats.map((c, j) => ({
+    const hasData = total > 0;
+
+    const segs = hasData ? cats.map((c, j) => ({
       label: c.label, color: c.color, pct: (theme.demo[j] / total) * 100
-    })).filter(s => s.pct > 0.5);
+    })).filter(s => s.pct > 0.5) : [];
 
-    const barHtml = segs.map(s =>
-      `<div class="demo-bar-seg" style="width:${s.pct.toFixed(1)}%;background:${s.color};"
-            title="${s.label}: ${s.pct.toFixed(0)}%"></div>`
-    ).join('');
+    const barHtml = hasData
+      ? segs.map(s =>
+          `<div class="demo-bar-seg" style="width:${s.pct.toFixed(1)}%;background:${s.color};"
+                title="${s.label}: ${s.pct.toFixed(0)}%"></div>`
+        ).join('')
+      : `<div style="width:100%;height:100%;background:var(--border);border-radius:4px;opacity:0.35;"></div>`;
 
-    const legendHtml = cats.map((c, j) => {
-      const pct = (theme.demo[j] / total * 100).toFixed(0);
-      return `<span class="demo-legend-item">
-        <span class="demo-legend-dot" style="background:${c.color};"></span>${c.label} ${pct}%
-      </span>`;
-    }).join('');
+    const legendHtml = hasData
+      ? cats.map((c, j) => {
+          const pct = (theme.demo[j] / total * 100).toFixed(0);
+          return `<span class="demo-legend-item">
+            <span class="demo-legend-dot" style="background:${c.color};"></span>${c.label} ${pct}%
+          </span>`;
+        }).join('')
+      : `<span style="font-size:12px;color:var(--muted);font-style:italic;">Demographic breakdown not yet available.</span>`;
 
     const exampleHtml = theme.examples.slice(0, 2).map(ex =>
       `<div class="example-quote ${axis}">"${ex}"</div>`
@@ -1404,7 +1416,6 @@
       <div class="theme-header" onclick="this.parentElement.classList.toggle('open')">
         <div class="theme-name-row">
           <div class="theme-name">${theme.name}</div>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);flex-shrink:0;">R²=${theme.r2.toFixed(2)}</span>
           <svg class="theme-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="6 9 12 15 18 9"/>
           </svg>
@@ -1468,6 +1479,7 @@
     const text = document.getElementById('submit-text').value.trim();
     const btn  = document.getElementById('submit-btn');
     const status = document.getElementById('submit-status');
+    console.log(text, btn, status)
 
     if (!text) {
       status.textContent = 'Please write something before submitting.';
@@ -1491,6 +1503,8 @@
       onSubmitInput();
       status.textContent = 'Thank you — your response was submitted!';
       status.className = 'submit-status success';
+      console.log(BACKEND_URL);
+
     } catch (err) {
       status.textContent = `Submission failed: ${err.message}`;
       status.className = 'submit-status error';
@@ -1504,7 +1518,7 @@
 
   /* ===== LEFT NAV SCROLLSPY ===== */
   (function() {
-    const navSections = ['intro', 'pipeline', 'themes', 'submit', 'authors', 'citation'];
+    const navSections = ['intro', 'pipeline', 'themes', 'submit', 'cite'];
     const sections = navSections.map(id => document.getElementById(id)).filter(Boolean);
 
     function updateActiveNav() {
@@ -1531,8 +1545,151 @@
     });
   })();
 
+  /* ===== CSV DEMOGRAPHICS LOADER ===== */
+  function parseCSVLine(line) {
+    const result = []; let cur = ''; let inQ = false;
+    for (const c of line) {
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+      else { cur += c; }
+    }
+    result.push(cur);
+    return result;
+  }
+
+  // Maps each axis's group label (as it appears in your proportions CSV index)
+  // to the position in demoCats[axis]. Adjust if your labels differ.
+  const groupIndex = {
+    race: {
+      'White': 0,
+      'Black or African American': 1,
+      'Asian': 2,
+      'Hispanic or Latino': 3,
+      'Middle Eastern or North African': 4,
+      'American Indian or Alaska Native': 5,
+      'Native Hawaiian or Pacific Islander': 6,
+      'Two or More Races': 7,
+      'Some Other Race': 8,
+    },
+    gender: {
+      'Cisgender Woman': 0,
+      'Cisgender Man': 1,
+      'Cisgender (Other)': 2,      // maps to Non-binary slot
+      'Transgender Woman': 3,
+      'Transgender Man': 4,
+      'Transgender (Other)': 5,
+      'Prefer not to answer': 6,
+    },
+    so: {
+      'Straight or heterosexual': 0,
+      'Gay or Lesbian': 1,
+      'Bisexual and/or Pansexual': 2,
+      'Queer': 3,
+      'Sexually fluid': 3,          // aggregated into Queer
+      'Asexual or aromantic': 4,
+      'Demisexual': 5,
+      'Multiple Identities': 6,
+      'Questioning': 6,             // aggregated into Multiple
+      'Other': 7,
+      'I prefer not to answer': 7,  // aggregated into Other
+    },
+  };
+
+  // Loads a CSV in the pandas .to_csv() format:
+  //   rows = identity groups, columns = theme names
+  // e.g. race_proportions.csv, gender_proportions.csv, so_proportions.csv
+  function applyAxisProportions(axis, groupThemeDict) {
+    // groupThemeDict: { group → { theme → value } }  (pandas to_dict() default format)
+    const nGroups = demoCats[axis].length;
+    const map = groupIndex[axis];
+    // Collect all theme names
+    const allThemes = new Set(Object.values(groupThemeDict).flatMap(g => Object.keys(g)));
+    allThemes.forEach(themeName => {
+      const demo = new Array(nGroups).fill(0);
+      for (const [groupName, themeValues] of Object.entries(groupThemeDict)) {
+        const idx = map[groupName];
+        if (idx === undefined) { console.warn(`Unknown group: "${groupName}"`); continue; }
+        const val = themeValues[themeName];
+        if (val != null && !isNaN(val)) demo[idx] += val;
+      }
+      const theme = themeData[axis]?.find(t => t.name === themeName);
+      if (theme) theme.demo = demo;
+    });
+  }
+
+  async function loadAxisProportions(axis, filename) {
+    // 1. Check for pre-built script-tag data (works with file://)
+    if (window.DEMOGRAPHICS?.[axis]) {
+      applyAxisProportions(axis, window.DEMOGRAPHICS[axis]);
+      return;
+    }
+    // 2. Fall back to fetch (requires HTTP server)
+    try {
+      const resp = await fetch(filename);
+      if (!resp.ok) return;
+      const lines = (await resp.text()).trim().split('\n');
+      const header = parseCSVLine(lines[0]);
+      const themeNames = header.slice(1).map(s => s.trim());
+      const nGroups = demoCats[axis].length;
+      const map = groupIndex[axis];
+      const themeArrays = {};
+      themeNames.forEach(n => { themeArrays[n] = new Array(nGroups).fill(0); });
+      for (let i = 1; i < lines.length; i++) {
+        const cols = parseCSVLine(lines[i]);
+        const groupName = cols[0].trim();
+        const idx = map[groupName];
+        if (idx === undefined) { console.warn(`[${filename}] Unknown group: "${groupName}"`); continue; }
+        themeNames.forEach((name, j) => {
+          const val = parseFloat(cols[j + 1]);
+          if (!isNaN(val)) themeArrays[name][idx] += val;
+        });
+      }
+      for (const [themeName, demo] of Object.entries(themeArrays)) {
+        const theme = themeData[axis]?.find(t => t.name === themeName);
+        if (theme) theme.demo = demo;
+      }
+    } catch (e) {
+      console.warn(`${filename} not found — skipping.`);
+    }
+  }
+
+  async function loadDemographics() {
+    await Promise.all([
+      loadAxisProportions('race',   'data/race_proportions.csv'),
+      loadAxisProportions('gender', 'data/gender_proportions.csv'),
+      loadAxisProportions('so',     'data/sexual_orientation_proportions.csv'),
+    ]);
+  }
+
+  /* ===== SAMPLE RESPONSES LOADER ===== */
+  async function loadSamples() {
+    try {
+      const resp = await fetch('sample_responses.csv');
+      if (!resp.ok) return;
+      const lines = (await resp.text()).trim().split('\n')
+        .filter(l => !l.trim().startsWith('#'))
+        .slice(1);
+      const samples = { race: [], gender: [], so: [] };
+      for (const line of lines) {
+        const cols = parseCSVLine(line);
+        const axis = cols[0]?.trim();
+        const text = cols[1]?.trim();
+        if (axis && text && samples[axis]) samples[axis].push(text);
+      }
+      ['race', 'gender', 'so'].forEach(axis => {
+        if (!samples[axis].length) return;
+        const container = document.getElementById(`samples-${axis}`);
+        if (container) container.innerHTML = samples[axis]
+          .map(t => `<div class="sample-response ${axis}">"${t}"</div>`)
+          .join('');
+      });
+    } catch (e) {
+      console.warn('sample_responses.csv not found — using defaults.');
+    }
+  }
+
   /* ===== INIT ===== */
-  buildThemes();
+  Promise.all([loadDemographics(), loadSamples()]).then(buildThemes);
 </script>
 </body>
 </html>
