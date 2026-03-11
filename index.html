@@ -146,7 +146,16 @@
       padding: 80px 0 64px;
       background: linear-gradient(135deg, #F8F5F1 0%, #EDE8F8 100%);
       border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
     }
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+    .hero .container { position: relative; z-index: 1; }
     .hero-tag {
       display: inline-block;
       background: var(--navy); color: #fff;
@@ -245,6 +254,33 @@
 
     /* ========= PIPELINE ========= */
     #pipeline { background: var(--white); }
+    .pipeline-figure-toggle {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 20px;
+      padding: 5px 14px; border-radius: 6px;
+      border: 1.5px solid var(--border); background: var(--white);
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .pipeline-figure-toggle:hover { border-color: var(--navy); color: var(--navy); }
+    .pipeline-figure-toggle svg { width: 13px; height: 13px; transition: transform 0.2s; }
+    .pipeline-figure-toggle.open svg { transform: rotate(180deg); }
+    .pipeline-figure {
+      margin: 12px 0 0;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--white);
+      display: none;
+    }
+    .pipeline-figure.open { display: block; }
+    .pipeline-figure img { display: block; width: 100%; }
+    .pipeline-figure-caption {
+      padding: 10px 16px 12px;
+      font-size: 12.5px; color: var(--muted); line-height: 1.5;
+      border-top: 1px solid var(--border);
+    }
+    .pipeline-figure-caption strong { color: var(--text); font-weight: 600; }
     .pipeline-steps {
       display: flex; gap: 8px;
       flex-wrap: wrap;
@@ -277,26 +313,14 @@
       background: var(--bg);
       border: 1.5px solid var(--border);
       border-radius: var(--radius);
-      padding: 32px 36px;
+      padding: 28px 32px;
     }
-    .pipeline-panel.active { display: flex; gap: 48px; align-items: flex-start; }
-    .pipeline-visual {
-      flex: 0 0 220px;
-      display: flex; flex-direction: column; align-items: center;
-      gap: 12px;
-    }
-    .pipeline-icon {
-      width: 80px; height: 80px; border-radius: 20px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 36px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-    }
-    .pipeline-visual-label {
+    .pipeline-panel.active { display: block; }
+    .pipeline-step-io {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px; text-align: center;
-      color: var(--muted); max-width: 200px;
+      font-size: 12px; color: var(--muted);
+      margin-bottom: 12px;
     }
-    .pipeline-content { flex: 1; }
     .pipeline-step-title {
       font-family: 'Lora', serif;
       font-size: 20px; font-weight: 600;
@@ -634,29 +658,61 @@
     }
 
     /* ========= CITATION ========= */
-    #citation { background: var(--white); }
+    #cite { background: var(--bg); }
     .citation-box {
       background: #2C3550;
       border-radius: var(--radius);
-      padding: 24px 28px;
+      padding: 0;
       position: relative;
-      margin-top: 28px;
+      margin-top: 24px;
+      overflow: hidden;
+    }
+    .citation-box-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .citation-box-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
+      color: rgba(255,255,255,0.35); text-transform: uppercase;
     }
     .citation-box pre {
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px; color: #cbd5e1;
       white-space: pre-wrap; line-height: 1.7;
       overflow-x: auto;
+      padding: 20px 24px;
+      margin: 0;
     }
     .copy-btn {
-      position: absolute; top: 14px; right: 14px;
-      background: rgba(255,255,255,0.1); color: #fff;
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 5px 12px; border-radius: 6px;
-      font-size: 12px; font-weight: 600; cursor: pointer;
+      background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.75);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 4px 12px; border-radius: 5px;
+      font-size: 11px; font-weight: 600; cursor: pointer;
       transition: background 0.15s;
     }
-    .copy-btn:hover { background: rgba(255,255,255,0.2); }
+    .copy-btn:hover { background: rgba(255,255,255,0.16); }
+    .cite-authors {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      margin-top: 24px;
+    }
+    .cite-author {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
+      padding: 12px 16px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      transition: box-shadow 0.15s;
+      flex: 1 1 0;
+    }
+    .cite-author:hover { box-shadow: var(--shadow); }
+    .cite-author img {
+      width: 44px; height: 44px;
+      border-radius: 50%; object-fit: cover; flex-shrink: 0;
+    }
+    .cite-author-name { font-size: 13px; font-weight: 600; color: var(--navy); }
+    .cite-author-affil { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
 
     /* ========= FOOTER ========= */
     footer {
@@ -711,11 +767,12 @@
 
 <!-- ============ HERO ============ -->
 <div class="hero" id="intro">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
   <div class="container">
     <!-- <div class="hero-tag">NLP &middot; Computational Social Science</div> -->
     <h1>In Your Own Words</h1>
     <p class="hero-subtitle">
-      We provide a <strong style="color:var(--text);">public dataset</strong> and computational framework for automatically discovering interpretable themes from free-text survey data. Applied to 1,004 U.S. participants' descriptions of race, gender, and sexual orientation, our framework helps surfaces themes — like identity fluidity, belonging, and cultural pride — that standard survey categories miss. These themes reveal heterogeneity within demographic groups and illuminate how self-identified identities diverge from perceived ones.
+      We provide a <strong style="color:var(--text);"> dataset</strong> and <strong style="color:var(--text);">computational framework</strong> for automatically discovering interpretable themes from free-text survey data. Applied to 1,004 U.S. participants' descriptions of race, gender, and sexual orientation, our framework helps surfaces themes — like identity fluidity, belonging, and cultural pride — that standard survey categories miss. These themes reveal heterogeneity within demographic groups and illuminate how self-identified identities diverge from perceived ones.
     </p>
     <div class="hero-links">
       <a href="#" class="btn btn-primary">
@@ -746,11 +803,28 @@
 <section id="pipeline">
   <div class="container">
     <div class="section-label">Methodology</div>
-    <div class="section-title">The Analysis Pipeline</div>
+    <div class="section-title">The Computational Framework</div>
     <p class="section-desc">
-      We combine large-scale text embeddings with a Sparse Autoencoder (SAE) and LLM interpretation
-      to automatically discover interpretable identity themes from free-text survey responses.
+      We computationally identify interpretable themes in participants' free-text responses using sparse autoencoder (SAE) models. Models are trained using the <a href="https://github.com/rmovva/HypotheSAEs">HypotheSAEs</a> library. These themes
+      are <strong>automatically learned from the data</strong> (that is, we do not pre-specify them). Each response is then
+      represented by which themes it expresses, converting unstructured free text into structured
+      data that is useable in downstream statistical analysis.
     </p>
+
+    <!-- Paper figure overview -->
+    <button class="pipeline-figure-toggle" id="fig-toggle" onclick="togglePipelineFigure()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      Show paper figure
+    </button>
+    <div class="pipeline-figure" id="pipeline-figure">
+      <img src="img/website-diagram-round.png" alt="Computational framework diagram showing steps b–e: embedding, SAE extraction, LLM interpretation, and annotation" />
+      <div class="pipeline-figure-caption">
+        <strong>Figure 1.</strong> The computational framework (panels b–e from the paper).
+        Steps 1–4 below correspond to: (b) converting free-text to embedding vectors,
+        (c) SAE extraction of interpretable dimensions,
+        (d) LLM theme labeling, and (e) per-response annotation.
+      </div>
+    </div>
 
     <!-- Step buttons -->
     <div class="pipeline-steps">
@@ -761,10 +835,10 @@
         <span class="step-num">2</span> SAE Extraction
       </button>
       <button class="pipeline-step-btn" onclick="showStep(2)">
-        <span class="step-num">3</span> LLM Interpret
+        <span class="step-num">3</span> LLM Interpretation
       </button>
       <button class="pipeline-step-btn" onclick="showStep(3)">
-        <span class="step-num">4</span> Annotate All
+        <span class="step-num">4</span> Annotate All Texts
       </button>
     </div>
 
@@ -772,78 +846,43 @@
 
     <!-- Step 1: Embed -->
     <div class="pipeline-panel active">
-      <div class="pipeline-visual">
-        <div class="pipeline-icon" style="background:linear-gradient(135deg,#EDE9FE,#A78BFA);">🔢</div>
-        <div class="pipeline-visual-label">
-          text → <span class="code-chip">3,072-dim</span> vector
-        </div>
-      </div>
-      <div class="pipeline-content">
-        <div class="pipeline-step-title">Compute Text Embeddings</div>
-        <p class="pipeline-step-desc">
-          Each free-text response is encoded into a dense semantic vector using
-          OpenAI's <span class="code-chip">text-embedding-3-large</span> model,
-          producing a 3,072-dimensional representation that captures the
-          semantic content of the response.
-        </p>
-      </div>
+      <div class="pipeline-step-title">Convert free-text inputs to embedding vectors</div>
+      <div class="pipeline-step-io">free-text response → <span class="code-chip">3,072-dim</span> vector</div>
+      <p class="pipeline-step-desc">
+        We convert free-text responses into embedding vectors using
+        OpenAI's <span class="code-chip">text-embedding-3-large</span> model. Each vector captures the semantic meaning of the response but is not readily interpretable.
+      </p>
     </div>
 
-    <!-- Step 3: SAE -->
+    <!-- Step 2: SAE -->
     <div class="pipeline-panel">
-      <div class="pipeline-visual">
-        <div class="pipeline-icon" style="background:linear-gradient(135deg,#FEF3C7,#FCD34D);">⚡</div>
-        <div class="pipeline-visual-label">
-          <span class="code-chip">3,072-dim</span> → <span class="code-chip">32 features</span>, K=4 active
-        </div>
-      </div>
-      <div class="pipeline-content">
-        <div class="pipeline-step-title">Train Sparse Autoencoder (SAE)</div>
-        <p class="pipeline-step-desc">
-          A Sparse Autoencoder (SAE) is trained separately on each identity's embeddings.
-          The SAE learns a sparse dictionary of M=32 features, where at most
-          K=4 features are active for any given response. This sparsity constraint encourages
-          each feature to capture a distinct, interpretable aspect of identity description. For more specific details, we recommend reading <a href="https://hypothesaes.org/" target="_blank">Movva and Peng et al. 2025</a> (code is available at <a href="https://hypothesaes.org/" target="_blank">hypothesaes.org/</a>).
-        </p>
-      </div>
+      <div class="pipeline-step-title">Sparse autoencoder extracts interpretable dimensions</div>
+      <div class="pipeline-step-io"><span class="code-chip">3,072-dim</span> vector → <span class="code-chip">32 sparse features</span>, K=4 active</div>
+      <p class="pipeline-step-desc">
+        A sparse autoencoder (SAE), trained separately on each identity axis, extracts interpretable dimensions from the embeddings. Each dimension captures a recurring pattern in how identity is expressed — such as references to cultural heritage, language, or childhood experiences.
+        <br><br>
+        The SAE learns a set of M=32 features, where at most K=4 are active for any given response. This sparsity encourages each feature to capture a distinct aspect of identity. For details, see <a href="https://proceedings.mlr.press/v267/movva25a.html" target="_blank">Movva and Peng et al. (2025)</a>; code at <a href="https://hypothesaes.org" target="_blank">hypothesaes.org</a>.
+      </p>
     </div>
 
-    <!-- Step 4: LLM Interpret -->
+    <!-- Step 3: LLM Interpret -->
     <div class="pipeline-panel">
-      <div class="pipeline-visual">
-        <div class="pipeline-icon" style="background:linear-gradient(135deg,#FCE7F3,#F9A8D4);">💬</div>
-        <div class="pipeline-visual-label">
-          Feature activations → human-readable theme label
-        </div>
-      </div>
-      <div class="pipeline-content">
-        <div class="pipeline-step-title">LLM-Interpret Each Feature</div>
-        <p class="pipeline-step-desc">
-          The top-activating responses for each SAE feature are passed to
-          <span class="code-chip">GPT-4o</span>, which generates a natural-language
-          description of what the feature represents. Features with poor fidelity
-          (F1 score &lt; 0.50) are excluded.
-        </p>
-      </div>
+      <div class="pipeline-step-title">LLM summarizes each SAE dimension with a theme label</div>
+      <div class="pipeline-step-io">top-activating responses → interpretable theme label</div>
+      <p class="pipeline-step-desc">
+        We prompt an LLM with the free-text responses that score highest on each SAE dimension, asking it to identify a common, interpretable theme. This produces labels like <em>"mentions cultural food as important to identity"</em> or <em>"mentions fluidity or fluctuation in gender identity."</em>
+      </p>
     </div>
 
-    <!-- Step 5: Annotate All -->
+    <!-- Step 4: Annotate All -->
     <div class="pipeline-panel">
-      <div class="pipeline-visual">
-        <div class="pipeline-icon" style="background:linear-gradient(135deg,#D1FAE5,#6EE7B7);">🏷️</div>
-        <div class="pipeline-visual-label">
-          All responses × all themes → binary annotations
-        </div>
-      </div>
-      <div class="pipeline-content">
-        <div class="pipeline-step-title">Annotate All Responses for Every Theme</div>
-        <p class="pipeline-step-desc">
-          Each theme label is used as a prompt for <span class="code-chip">GPT-4.1-mini</span>
-          to annotate <em>every</em> response (0/1) — not just the top-activating ones.
-          This produces a full binary annotation matrix for downstream analysis,
-          validated against human raters (κ = 0.65).
-        </p>
-      </div>
+      <div class="pipeline-step-title">Annotate every response for each theme</div>
+      <div class="pipeline-step-io">theme label + response → 0 / 1</div>
+      <p class="pipeline-step-desc">
+        Each theme label is used as a prompt for <span class="code-chip">GPT-4.1-mini</span>
+        to annotate <em>every</em> response — not just the top-activating ones.
+        This yields a full binary annotation matrix suitable for downstream statistical analysis.
+      </p>
     </div>
 
     <!-- Nav -->
@@ -866,7 +905,8 @@
       <div class="section-label">Interactive Explorer</div>
       <div class="section-title">Themes Discovered Across Identity Dimensions</div>
       <p class="section-desc">
-        The SAE discovers interpretable themes for each identity axis. Each bar shows the
+        The SAE discovers interpretable themes for each identity axis. 
+        Each bar shows the
         proportion of respondents in each demographic group whose free-text description
         activates a given theme — revealing patterns that go beyond what standard
         closed-category survey questions capture.
@@ -886,9 +926,8 @@
         <div class="sort-btn-group">
           <button class="sort-btn active" onclick="sortThemes('race','max-asc')" id="sort-race-max-asc">Broadly shared</button>
           <button class="sort-btn" onclick="sortThemes('race','max-desc')" id="sort-race-max-desc">Group-specific</button>
-          <button class="sort-btn" onclick="sortThemes('race','name')" id="sort-race-name">A → Z</button>
         </div>
-        <span class="sort-note">Themes at the top are expressed across groups; themes at the bottom are concentrated in specific groups.</span>
+        <span class="sort-note" id="sort-note-race"></span>
       </div>
       <div class="theme-list" id="themes-race"></div>
     </div>
@@ -900,9 +939,8 @@
         <div class="sort-btn-group">
           <button class="sort-btn active" onclick="sortThemes('gender','max-asc')" id="sort-gender-max-asc">Broadly shared</button>
           <button class="sort-btn" onclick="sortThemes('gender','max-desc')" id="sort-gender-max-desc">Group-specific</button>
-          <button class="sort-btn" onclick="sortThemes('gender','name')" id="sort-gender-name">A → Z</button>
         </div>
-        <span class="sort-note">Themes at the top are expressed across groups; themes at the bottom are concentrated in specific groups.</span>
+        <span class="sort-note" id="sort-note-gender"></span>
       </div>
       <div class="theme-list" id="themes-gender"></div>
     </div>
@@ -914,9 +952,8 @@
         <div class="sort-btn-group">
           <button class="sort-btn active" onclick="sortThemes('so','max-asc')" id="sort-so-max-asc">Broadly shared</button>
           <button class="sort-btn" onclick="sortThemes('so','max-desc')" id="sort-so-max-desc">Group-specific</button>
-          <button class="sort-btn" onclick="sortThemes('so','name')" id="sort-so-name">A → Z</button>
         </div>
-        <span class="sort-note">Themes at the top are expressed across groups; themes at the bottom are concentrated in specific groups.</span>
+        <span class="sort-note" id="sort-note-so"></span>
       </div>
       <div class="theme-list" id="themes-so"></div>
     </div>
@@ -933,49 +970,16 @@
       we invite you to describe your own race, gender, or sexual orientation in your own words.
     </p>
 
-    <!-- Sample responses by axis (10 per axis, ~3 visible, scroll for rest) -->
+    <!-- Sample responses loaded dynamically from data/sample_responses.csv -->
     <div id="submit-samples">
       <div class="sample-scroll-wrap" id="wrap-race">
-        <div class="sample-responses" id="samples-race">
-          <div class="sample-response race">"Black or African American."</div>
-          <div class="sample-response race">"I am a Black African American. My root is from Western Africa."</div>
-          <div class="sample-response race">"I feel like I'm caught between two worlds — not quite fitting into either the majority or my heritage group."</div>
-          <div class="sample-response race">"I am Filipino American. I can speak Tagalog and other dialects — I find this very unique."</div>
-          <div class="sample-response race">"My family speaks both English and Spanish at home, which has been central to my cultural identity."</div>
-          <div class="sample-response race">"We love to eat delicious food that includes all of our unique spices, and we have a very rich history and culture."</div>
-          <div class="sample-response race">"I am Filipino but I was born and raised in America. Both of my parents and all of my extended family are immigrants."</div>
-          <div class="sample-response race">"I am a half Irish and half Italian third generation American. My great-grandparents were originally from Italy and Ireland."</div>
-          <div class="sample-response race">"We come from a culture that values community, family above all, and honoring our ancestors."</div>
-          <div class="sample-response race">"Born and raised in the United States, but my roots go back to the Philippines."</div>
-        </div>
+        <div class="sample-responses" id="samples-race"></div>
       </div>
       <div class="sample-scroll-wrap" id="wrap-gender" style="display:none;">
-        <div class="sample-responses" id="samples-gender">
-          <div class="sample-response gender">"I call myself genderfluid. Most days I feel I have no gender, but other days I feel like a woman and others a man."</div>
-          <div class="sample-response gender">"I was born a male, but I've been transitioning to female over the last year. I've always known, but I never had the funds to do so until recently."</div>
-          <div class="sample-response gender">"I don't have one. I feel disconnected from (and generally apathetic about) the entire concept of gender."</div>
-          <div class="sample-response gender">"I am non-binary and trans masculine. I express my gender in a more feminine way but I'm incredibly androgynous."</div>
-          <div class="sample-response gender">"Some days I wake up feeling entirely masculine, others entirely feminine. I've stopped trying to pin it down."</div>
-          <div class="sample-response gender">"I don't consider myself super feminine but I definitely enjoy and partake in things one would deem feminine — like heels, makeup, and fashion."</div>
-          <div class="sample-response gender">"I am a man. I do things that are manly. I usually fix things that are broken."</div>
-          <div class="sample-response gender">"As a man it's my duty to make sure I provide for my family and protect my loved ones."</div>
-          <div class="sample-response gender">"My identity as a woman is deeply tied to being a mother and keeping the family together."</div>
-          <div class="sample-response gender">"Male. That is all."</div>
-        </div>
+        <div class="sample-responses" id="samples-gender"></div>
       </div>
       <div class="sample-scroll-wrap" id="wrap-so" style="display:none;">
-        <div class="sample-responses" id="samples-so">
-          <div class="sample-response so">"This is kind of a tricky one for me. While I am mostly what others would label Heterosexual, I must admit that I find myself rather Bi-Curious at times."</div>
-          <div class="sample-response so">"I've been questioning for a few years now. I know I'm not fully straight, but I haven't landed on a label yet."</div>
-          <div class="sample-response so">"As a bisexual person, I am attracted to individuals of more than one gender, finding beauty and connection in diverse expressions of identity."</div>
-          <div class="sample-response so">"I'm bisexual — as in, 'genders like mine and genders not like mine.' Bisexuality isn't binary or dualistic."</div>
-          <div class="sample-response so">"I am pansexual, which means I don't base my attraction on someone's gender/sex. My attraction is based on a person's heart."</div>
-          <div class="sample-response so">"I am not attracted to people based on their gender or sex. I find people attractive for who they are as people."</div>
-          <div class="sample-response so">"I am gay. I found out when I was very young — in middle school."</div>
-          <div class="sample-response so">"I didn't come out until I was 40. For most of my life I thought I was straight because that's all I knew."</div>
-          <div class="sample-response so">"I am heterosexual and have always been my whole life. I have only seen women as romantic interests."</div>
-          <div class="sample-response so">"Forming romantic connections has always been hard for me. I'm not sure if it's demisexuality or just anxiety."</div>
-        </div>
+        <div class="sample-responses" id="samples-so"></div>
       </div>
     </div>
 
@@ -1020,45 +1024,43 @@
   <div class="container">
     <div class="section-label">Citation</div>
     <div class="section-title">Cite This Work</div>
+
     <div class="citation-box">
-      <button class="copy-btn" onclick="copyCitation()">Copy</button>
-      <pre id="bibtex">@article{2026inyourownwords,
-  title     = {In your own words: computationally identifying interpretable themes in free-text survey data},
-author={Wang, Jenny S and Saperstein, Aliya and Pierson, Emma}, 
-  journal={arXiv preprint},   
-  year      = {2026},
-  url       = {<!-- URL -->}
-}</pre>
-      <div style="border-top:1px solid rgba(255,255,255,0.12);margin-top:20px;padding-top:20px;
-                  display:flex;flex-wrap:wrap;gap:24px 40px;align-items:flex-start;">
-        <a href="https://www.hbs.edu/faculty/Pages/profile.aspx?facId=1543960" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;">
-          <img src="img/profile_jenny.jpg" alt="Jenny S. Wang"
-               style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.25);"
-               onerror="this.style.display='none';" />
-          <span style="text-align:center;">
-            <div style="font-size:13px;font-weight:600;color:#e2e8f0;">Jenny S. Wang</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.45);">Harvard Business School</div>
-          </span>
-        </a>
-        <a href="https://sociology.stanford.edu/people/aliya-saperstein" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;">
-          <img src="img/profile_aliya.webp" alt="Aliya Saperstein"
-               style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.25);"
-               onerror="this.style.display='none';" />
-          <span style="text-align:center;">
-            <div style="font-size:13px;font-weight:600;color:#e2e8f0;">Aliya Saperstein</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.45);">Stanford University</div>
-          </span>
-        </a>
-        <a href="https://people.eecs.berkeley.edu/~emmapierson/" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;">
-          <img src="img/profile_emma.jpg" alt="Emma Pierson"
-               style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.25);"
-               onerror="this.style.display='none';" />
-          <span style="text-align:center;">
-            <div style="font-size:13px;font-weight:600;color:#e2e8f0;">Emma Pierson</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.45);">University of California, Berkeley</div>
-          </span>
-        </a>
+      <div class="citation-box-header">
+        <span class="citation-box-label">BibTeX</span>
+        <button class="copy-btn" onclick="copyCitation()">Copy</button>
       </div>
+      <pre id="bibtex">@article{2026inyourownwords,
+  title   = {In your own words: computationally identifying interpretable themes in free-text survey data},
+  author  = {Wang, Jenny S and Saperstein, Aliya and Pierson, Emma},
+  journal = {arXiv preprint},
+  year    = {2026},
+  url     = {}
+}</pre>
+    </div>
+
+    <div class="cite-authors">
+      <a href="https://www.hbs.edu/faculty/Pages/profile.aspx?facId=1543960" target="_blank" class="cite-author">
+        <img src="img/profile_jenny.jpg" alt="Jenny S. Wang" onerror="this.style.display='none';" />
+        <div>
+          <div class="cite-author-name">Jenny S. Wang</div>
+          <div class="cite-author-affil">Harvard Business School</div>
+        </div>
+      </a>
+      <a href="https://sociology.stanford.edu/people/aliya-saperstein" target="_blank" class="cite-author">
+        <img src="img/profile_aliya.webp" alt="Aliya Saperstein" onerror="this.style.display='none';" />
+        <div>
+          <div class="cite-author-name">Aliya Saperstein</div>
+          <div class="cite-author-affil">Stanford University</div>
+        </div>
+      </a>
+      <a href="https://people.eecs.berkeley.edu/~emmapierson/" target="_blank" class="cite-author">
+        <img src="img/profile_emma.jpg" alt="Emma Pierson" onerror="this.style.display='none';" />
+        <div>
+          <div class="cite-author-name">Emma Pierson</div>
+          <div class="cite-author-affil">University of California, Berkeley</div>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -1067,15 +1069,143 @@ author={Wang, Jenny S and Saperstein, Aliya and Pierson, Emma},
 <footer>
   <p>
     <strong style="color:rgba(255,255,255,0.85);">In Your Own Words</strong> &nbsp;·&nbsp;
-    <!-- <a href="#">Paper</a> &nbsp;·&nbsp;
-    <a href="#">Code</a> &nbsp;·&nbsp;
-    <a href="#">Data</a> &nbsp;·&nbsp; -->
-    Questions? <a href="mailto:">Contact us</a>
+    <a href="#">Paper</a> &nbsp;·&nbsp;
+    <a href="https://github.com/jennyw23/InYourOwnWords">Code</a> &nbsp;·&nbsp;
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdn29f5FPxeCmHPTNaXFTpF7kFQmIbziAqANjIK-WnTBY6ymA/viewform">Data</a> &nbsp;
+    <!-- Questions? <a href="mailto:">Contact us</a> -->
   </p>
 </footer>
 
 <!-- ============ JAVASCRIPT ============ -->
 <script>
+  /* ===== HERO CANVAS ANIMATION ===== */
+  (function () {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const COLORS = [
+      [107, 159, 212],  // race blue
+      [159, 135, 204],  // gender purple
+      [217, 122, 155],  // so pink
+      [74,  111, 165],  // navy
+      [130, 150, 190],  // steel
+    ];
+
+    const COLS = 6;
+    const ROWS = 3;
+    const NUM  = COLS * ROWS;  // 18 bubbles in a 6×3 grid
+    let bubbles = [];
+    let animId;
+
+    function resize() {
+      const hero = canvas.parentElement;
+      canvas.width  = hero.offsetWidth;
+      canvas.height = hero.offsetHeight;
+    }
+
+    function makeBubble(index) {
+      const color = COLORS[index % COLORS.length];
+      const w = 110 + Math.random() * 120;
+      const h = 36  + Math.random() * 20;
+
+      // Place each bubble in its own grid cell so they cover the full canvas
+      const col = index % COLS;
+      const row = Math.floor(index / COLS);
+      const cellW = canvas.width  / COLS;
+      const cellH = canvas.height / ROWS;
+      const x     = col * cellW + Math.random() * cellW;
+      const baseY = row * cellH + cellH * 0.2 + Math.random() * cellH * 0.6;
+
+      return {
+        x, baseY, w, h,
+        vx:    0.20 + Math.random() * 0.30,
+        phase: Math.random() * Math.PI * 2,
+        amp:   6 + Math.random() * 10,
+        speed: 0.002 + Math.random() * 0.003,
+        t:     Math.random() * 100,
+        alpha: 0.10 + Math.random() * 0.15,   // 0.10–0.0.25, more visible
+        color,
+      };
+    }
+
+    // Draws a speech bubble with a small tail at the bottom-left
+    function speechBubble(x, y, w, h, r) {
+      const left = x, right = x + w, top = y, bottom = y + h;
+      const tailX = left + r + 8;   // tail start (left edge of tail)
+      const tailW = 10;              // tail base width
+      const tailH = 11;              // tail height below bubble
+      ctx.beginPath();
+      ctx.moveTo(left + r, top);
+      ctx.lineTo(right - r, top);
+      ctx.arcTo(right, top,    right,  top + r,    r);
+      ctx.lineTo(right, bottom - r);
+      ctx.arcTo(right, bottom, right - r, bottom,  r);
+      ctx.lineTo(tailX + tailW, bottom);
+      ctx.lineTo(tailX + tailW * 0.4, bottom + tailH);  // tail tip
+      ctx.lineTo(tailX, bottom);
+      ctx.lineTo(left + r, bottom);
+      ctx.arcTo(left, bottom, left, bottom - r, r);
+      ctx.lineTo(left, top + r);
+      ctx.arcTo(left, top, left + r, top, r);
+      ctx.closePath();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (const b of bubbles) {
+        b.x += b.vx;
+        b.t += b.speed;
+        const y = b.baseY + Math.sin(b.phase + b.t) * b.amp;
+
+        if (b.x > canvas.width + b.w + 20) {
+          b.x = -(b.w + 20);
+          b.baseY = Math.random() * canvas.height;
+        }
+
+        const [r, g, bl] = b.color;
+        const rx = Math.min(b.h / 2, 14);
+
+        ctx.save();
+        ctx.globalAlpha = b.alpha;
+
+        speechBubble(b.x - b.w / 2, y - b.h / 2, b.w, b.h, rx);
+        ctx.fillStyle = `rgba(${r},${g},${bl},0.28)`;
+        ctx.fill();
+
+        speechBubble(b.x - b.w / 2, y - b.h / 2, b.w, b.h, rx);
+        ctx.strokeStyle = `rgba(${r},${g},${bl},0.55)`;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.restore();
+      }
+
+      animId = requestAnimationFrame(draw);
+    }
+
+    function init() {
+      resize();  // now uses hero.offsetWidth/Height, valid after layout
+      bubbles = Array.from({ length: NUM }, (_, i) => makeBubble(i));
+      if (animId) cancelAnimationFrame(animId);
+      draw();
+    }
+
+    window.addEventListener('resize', init);
+    // Defer until after first layout so offsetWidth/Height are non-zero
+    requestAnimationFrame(init);
+  })();
+
+  /* ===== PIPELINE FIGURE TOGGLE ===== */
+  function togglePipelineFigure() {
+    const fig = document.getElementById('pipeline-figure');
+    const btn = document.getElementById('fig-toggle');
+    const open = fig.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg> ${open ? 'Hide paper figure' : 'Show paper figure'}`;
+  }
+
   /* ===== PIPELINE ===== */
   let currentStep = 0;
   const totalSteps = 4;
@@ -1342,12 +1472,19 @@ author={Wang, Jenny S and Saperstein, Aliya and Pierson, Emma},
     return Math.max(...theme.demo) / total;
   }
 
+  const SORT_NOTES = {
+    'max-asc':  'Themes at the top are expressed broadly across groups; themes at the bottom are concentrated in specific groups.',
+    'max-desc': 'Themes at the top are concentrated in specific groups; themes at the bottom are expressed broadly across groups.',
+  };
+
   function sortThemes(axis, mode) {
     currentSort[axis] = mode;
     ['max-asc', 'max-desc', 'name'].forEach(m => {
       const btn = document.getElementById(`sort-${axis}-${m}`);
       if (btn) btn.classList.toggle('active', m === mode);
     });
+    const note = document.getElementById(`sort-note-${axis}`);
+    if (note) note.textContent = SORT_NOTES[mode] || '';
     const container = document.getElementById(`themes-${axis}`);
     container.innerHTML = '';
     const sorted = [...themeData[axis]];
@@ -1479,7 +1616,6 @@ author={Wang, Jenny S and Saperstein, Aliya and Pierson, Emma},
     const text = document.getElementById('submit-text').value.trim();
     const btn  = document.getElementById('submit-btn');
     const status = document.getElementById('submit-status');
-    console.log(text, btn, status)
 
     if (!text) {
       status.textContent = 'Please write something before submitting.';
@@ -1487,25 +1623,37 @@ author={Wang, Jenny S and Saperstein, Aliya and Pierson, Emma},
       return;
     }
 
+    const payload = { axis: submitAxis, text };
+    console.log('[submit] sending to:', BACKEND_URL);
+    console.log('[submit] payload:', payload);
+
     btn.disabled = true;
     btn.textContent = 'Submitting…';
 
     try {
       // Apps Script requires no-cors; we can't read the response body,
       // so we optimistically show success after the request fires.
-      await fetch(BACKEND_URL, {
+      // Must use 'text/plain' — 'application/json' is not a simple header
+      // and gets stripped by the browser in no-cors mode.
+      // GAS reads the body via e.postData.contents and JSON.parses it.
+      const resp = await fetch(BACKEND_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ axis: submitAxis, text }),
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload),
       });
+      // no-cors responses are always type 'opaque' — status is always 0
+      // and body is unreadable. A thrown error means the network call failed.
+      console.log('[submit] fetch resolved — response type:', resp.type, '| status:', resp.status);
+      console.log('[submit] (opaque response is expected with no-cors; check Google Sheet to confirm row was written)');
+
       document.getElementById('submit-text').value = '';
       onSubmitInput();
       status.textContent = 'Thank you — your response was submitted!';
       status.className = 'submit-status success';
-      console.log(BACKEND_URL);
 
     } catch (err) {
+      console.error('[submit] fetch threw an error (network failure):', err);
       status.textContent = `Submission failed: ${err.message}`;
       status.className = 'submit-status error';
     } finally {
@@ -1664,7 +1812,7 @@ author={Wang, Jenny S and Saperstein, Aliya and Pierson, Emma},
   /* ===== SAMPLE RESPONSES LOADER ===== */
   async function loadSamples() {
     try {
-      const resp = await fetch('sample_responses.csv');
+      const resp = await fetch('data/sample_responses.csv');
       if (!resp.ok) return;
       const lines = (await resp.text()).trim().split('\n')
         .filter(l => !l.trim().startsWith('#'))
@@ -1684,7 +1832,7 @@ author={Wang, Jenny S and Saperstein, Aliya and Pierson, Emma},
           .join('');
       });
     } catch (e) {
-      console.warn('sample_responses.csv not found — using defaults.');
+      console.warn('data/sample_responses.csv not found — no samples loaded.');
     }
   }
 
